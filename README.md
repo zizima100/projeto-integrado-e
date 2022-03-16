@@ -11,4 +11,4 @@ https://docs.flutter.dev/get-started/install/linux
 > flutter pub get
 ## Build runner
 Let this command run in a terminal while developing mobx code related stuff
-> flutter pub run build_runner watch
+> flutter pub run build_runner watch --delete-conflicting-outputs
