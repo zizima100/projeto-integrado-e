@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "282458265705",
+    "project_id": "the-spot-2022",
+    "storage_bucket": "the-spot-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282458265705:android:e41b1f787965696f0f6af8",
+        "android_client_info": {
+          "package_name": "com.example.thespot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282458265705-rfroj92fnfd53dgfm3sarj3deqq3b11c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7U-ehR7AXf0cXpYpWc8ByKVQ4LWH7owI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282458265705-rfroj92fnfd53dgfm3sarj3deqq3b11c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

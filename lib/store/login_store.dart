@@ -1,10 +1,13 @@
 import 'package:mobx/mobx.dart';
+import 'package:thespot/repository/google_sign_in_repository.dart';
 
 part 'login_store.g.dart';
 
 class Login = _Login with _$Login;
 
 abstract class _Login with Store {
+  static late GoogleSignInRepository _googleRepository;
+
   @observable
   LoginProgressState _progressState = LoginProgressState.INITIAL;
 
@@ -13,9 +16,9 @@ abstract class _Login with Store {
 
   @action
   Future<void> login() async {
-    _progressState = LoginProgressState.LOADING;
-    await Future.delayed(const Duration(seconds: 3));
-    _progressState = LoginProgressState.SUCCESS;
+    _googleRepository = GoogleSignInRepository();
+    String? email = await _googleRepository.signIn();
+    print('email = $email');
   }
 }
 
