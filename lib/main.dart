@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import 'package:thespot/store/login_store.dart';
 import 'package:thespot/ui/screens/login_screen.dart';
 
@@ -14,12 +15,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provider(
       create: (context) => Login(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      child: Sizer(
+        builder: (context, orientation, deviceType) => MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const LoginScreen(),
+          debugShowCheckedModeBanner: false,
         ),
-        home: const LoginScreen(),
       ),
     );
   }
