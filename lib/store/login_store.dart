@@ -1,12 +1,18 @@
 import 'package:mobx/mobx.dart';
+import 'package:thespot/exceptions/login_exceptions.dart';
+import 'package:thespot/models/user_model.dart';
 import 'package:thespot/repository/google_sign_in_repository.dart';
 
 part 'login_store.g.dart';
 
-class Login = _Login with _$Login;
+class Login extends _Login with _$Login {
+  Login(GoogleSignInRepository signInRepository) {
+    super._signInRepository = signInRepository;
+  }
+}
 
 abstract class _Login with Store {
-  static late GoogleSignInRepository _googleRepository;
+  late GoogleSignInRepository _signInRepository;
 
   @observable
   LoginProgressState _progressState = LoginProgressState.INITIAL;
@@ -16,9 +22,12 @@ abstract class _Login with Store {
 
   @action
   Future<void> login() async {
-    _googleRepository = GoogleSignInRepository();
-    String? email = await _googleRepository.signIn();
-    print('email = $email');
+    try {
+      User user = await _signInRepository.signIn();
+      print('user = $user');
+    } on GoogleSignInException {
+      _progressState = LoginProgressState.ERROR;
+    }
   }
 }
 
