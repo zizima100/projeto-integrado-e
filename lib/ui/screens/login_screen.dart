@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:thespot/store/login_store.dart';
@@ -19,7 +20,7 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Image.asset('assets/logo.png'),
+              SvgPicture.asset('assets/logo.svg'),
               SizedBox(
                 height: 4.5.h,
               ),
@@ -32,7 +33,7 @@ class LoginScreen extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: Image.asset('assets/chair.png'),
+                child: SvgPicture.asset('assets/chair.svg'),
               ),
             ],
           ),
@@ -67,8 +68,8 @@ class _GoogleSignInButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/google_logo.png',
+              SvgPicture.asset(
+                'assets/google_logo.svg',
                 height: 5.w,
               ),
               SizedBox(
