@@ -1,6 +1,6 @@
 
-import 'package:thespot/data/model/auth_user.dart';
+import 'package:thespot/data/model/auth_employee.dart';
 
 abstract class GoogleSignInRepository {
-  Future<AuthUser> signIn();
+  Future<AuthEmployee> signIn();
 }

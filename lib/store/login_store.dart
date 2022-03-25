@@ -1,7 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/exceptions/auth_exceptions.dart';
 import 'package:thespot/data/model/auth_employee.dart';
-import 'package:thespot/data/repository/auth_repository.dart';
+import 'package:thespot/repository/auth_repository.dart';
 import 'package:thespot/repository/google_sign_in_repository.dart';
 
 part 'login_store.g.dart';
