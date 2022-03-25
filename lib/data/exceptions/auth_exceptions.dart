@@ -2,11 +2,11 @@ class GoogleSignInException implements Exception {
   const GoogleSignInException();
 
   @override
-  String toString() => 'Ocorreu um erro';
+  String toString() => 'Error in google sign in';
 }
 
-class CurrentUserNotFound implements Exception {
-  const CurrentUserNotFound();
+class CurrentEmployeeNotFound implements Exception {
+  const CurrentEmployeeNotFound();
 
   @override
   String toString() => 'Current user was not found';
