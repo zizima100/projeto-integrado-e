@@ -5,10 +5,10 @@ import 'package:thespot/data/model/auth_employee.dart';
 import 'package:thespot/repository/auth_repository.dart';
 import 'package:thespot/repository/google_sign_in_repository.dart';
 
-part 'login_store.g.dart';
+part 'auth_store.g.dart';
 
-class Login extends _Login with _$Login {
-  Login({
+class AuthStore extends _AuthStore with _$AuthStore {
+  AuthStore({
     required GoogleSignInRepository signInRepository,
     required AuthRepository authRepository,
   }) {
@@ -17,7 +17,7 @@ class Login extends _Login with _$Login {
   }
 }
 
-abstract class _Login with Store {
+abstract class _AuthStore with Store {
   late GoogleSignInRepository _signInRepository;
   late AuthRepository _authRepository;
 

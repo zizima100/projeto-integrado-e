@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:thespot/store/login_store.dart';
+import 'package:thespot/store/auth_store.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/routes/routes.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final progressState = Provider.of<Login>(context, listen: false).state;
+        final progressState =
+            Provider.of<AuthStore>(context, listen: false).state;
         if (progressState == LoginProgressState.SUCCESS) {
           debugPrint('LoginProgressState.SUCCESS');
           WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -133,7 +134,7 @@ class _GoogleSignInButton extends StatelessWidget {
           ),
         ),
         onPressed: () async {
-          await Provider.of<Login>(context, listen: false).login();
+          await Provider.of<AuthStore>(context, listen: false).login();
         },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: context.layoutHeight(1.8)),

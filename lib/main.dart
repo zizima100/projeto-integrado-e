@@ -3,21 +3,20 @@ import 'package:provider/provider.dart';
 import 'package:thespot/data/provider/auth_provider_impl.dart';
 import 'package:thespot/repository/auth_repository_impl.dart';
 import 'package:thespot/repository/google_sign_in_repository_impl.dart';
-import 'package:thespot/store/login_store.dart';
+import 'package:thespot/store/auth_store.dart';
 import 'package:thespot/ui/routes/routes.dart';
-import 'package:thespot/ui/screens/login_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const TheSpotApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class TheSpotApp extends StatelessWidget {
+  const TheSpotApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (context) => Login(
+      create: (context) => AuthStore(
         signInRepository: GoogleSignInRepositoryImpl(),
         authRepository: AuthRepositoryImpl(provider: AuthProviderImpl()),
       ),

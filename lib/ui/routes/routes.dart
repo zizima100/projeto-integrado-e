@@ -1,14 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:thespot/ui/screens/login_screen.dart';
+import 'package:thespot/ui/screens/auth_screen.dart';
 import 'package:thespot/ui/screens/main_screen.dart';
 
 class TheSpotRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/auth':
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(builder: (_) => const AuthScreen());
       case '/main':
         return MaterialPageRoute(builder: (_) => const MainScreen());
       default:
