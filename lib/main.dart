@@ -4,6 +4,7 @@ import 'package:thespot/data/provider/auth_provider_impl.dart';
 import 'package:thespot/repository/auth_repository_impl.dart';
 import 'package:thespot/repository/google_sign_in_repository_impl.dart';
 import 'package:thespot/store/login_store.dart';
+import 'package:thespot/ui/routes/routes.dart';
 import 'package:thespot/ui/screens/login_screen.dart';
 
 void main() {
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const LoginScreen(),
+        onGenerateRoute: TheSpotRouter.generateRoute,
+        initialRoute: TheSpotRouter.AUTH_ROUTE,
         debugShowCheckedModeBanner: false,
       ),
     );

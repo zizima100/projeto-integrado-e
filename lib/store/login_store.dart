@@ -1,5 +1,6 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:mobx/mobx.dart';
-import 'package:thespot/data/exceptions/auth_exceptions.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'package:thespot/repository/auth_repository.dart';
 import 'package:thespot/repository/google_sign_in_repository.dart';
@@ -21,22 +22,35 @@ abstract class _Login with Store {
   late AuthRepository _authRepository;
 
   @observable
-  LoginProgressState _progressState = LoginProgressState.INITIAL;
+  LoginProgressState _state = LoginProgressState.INITIAL;
 
   @computed
-  LoginProgressState get progressState => _progressState;
+  LoginProgressState get state => _state;
 
   @action
   Future<void> login() async {
     try {
+      print('Store login');
       AuthEmployee user = await _signInRepository.signIn();
+      print('user = $user');
+      _state = LoginProgressState.LOADING;
       final isAuthorized = await _authRepository.isAuthorized(user.email);
-      print('isAuthorized -> $isAuthorized');
-    } on GoogleSignInException {
-      _progressState = LoginProgressState.ERROR;
+      print('isAuthorized = $isAuthorized');
+      if (isAuthorized) {
+        _state = LoginProgressState.SUCCESS;
+      } else {
+        _state = LoginProgressState.UNAUTHORIZED;
+      }
+    } catch (e) {
+      _state = LoginProgressState.ERROR;
     }
   }
 }
 
-// ignore: constant_identifier_names
-enum LoginProgressState { INITIAL, LOADING, ERROR, SUCCESS }
+enum LoginProgressState {
+  INITIAL,
+  LOADING,
+  ERROR,
+  SUCCESS,
+  UNAUTHORIZED,
+}

@@ -9,26 +9,25 @@ part of 'login_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Login on _Login, Store {
-  Computed<LoginProgressState>? _$progressStateComputed;
+  Computed<LoginProgressState>? _$stateComputed;
 
   @override
-  LoginProgressState get progressState => (_$progressStateComputed ??=
-          Computed<LoginProgressState>(() => super.progressState,
-              name: '_Login.progressState'))
+  LoginProgressState get state => (_$stateComputed ??=
+          Computed<LoginProgressState>(() => super.state, name: '_Login.state'))
       .value;
 
-  final _$_progressStateAtom = Atom(name: '_Login._progressState');
+  final _$_stateAtom = Atom(name: '_Login._state');
 
   @override
-  LoginProgressState get _progressState {
-    _$_progressStateAtom.reportRead();
-    return super._progressState;
+  LoginProgressState get _state {
+    _$_stateAtom.reportRead();
+    return super._state;
   }
 
   @override
-  set _progressState(LoginProgressState value) {
-    _$_progressStateAtom.reportWrite(value, super._progressState, () {
-      super._progressState = value;
+  set _state(LoginProgressState value) {
+    _$_stateAtom.reportWrite(value, super._state, () {
+      super._state = value;
     });
   }
 
@@ -42,7 +41,7 @@ mixin _$Login on _Login, Store {
   @override
   String toString() {
     return '''
-progressState: ${progressState}
+state: ${state}
     ''';
   }
 }
