@@ -30,8 +30,8 @@ abstract class _Login with Store {
   Future<void> login() async {
     try {
       AuthEmployee user = await _signInRepository.signIn();
-      print('user = $user');
       final isAuthorized = await _authRepository.isAuthorized(user.email);
+      print('isAuthorized -> $isAuthorized');
     } on GoogleSignInException {
       _progressState = LoginProgressState.ERROR;
     }

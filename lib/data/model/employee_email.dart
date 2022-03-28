@@ -4,7 +4,6 @@ class EmployeeEmailRequest {
     this.email,
   );
 
-  Map<String, String> toMap() => {
-    'email':'email'
-  };
+  @override
+  String toString() => email;
 }

@@ -13,14 +13,9 @@ class AuthProviderImpl implements AuthProvider {
 
   @override
   Future<AuthResponse> isAuthorized(EmployeeEmailRequest email) async {
-    final params = email.toMap();
-    await client.get(
-      Uri.https(
-        Constants.API_URL,
-        '/auth',
-      ),
-      headers: params
+    Response response = await client.get(
+      Uri.parse(Constants.API_URL + '/auth?email=$email'),
     );
-    return Future.value(AuthResponse(isAuthorized: true));
+    return AuthResponse.fromJson(response.body);
   }
 }

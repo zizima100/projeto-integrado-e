@@ -7,21 +7,15 @@ class AuthResponse {
     required this.isAuthorized,
   });
 
-  Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-  
-    result.addAll({'isAuthorized': isAuthorized});
-  
-    return result;
-  }
-
   factory AuthResponse.fromMap(Map<String, dynamic> map) {
     return AuthResponse(
-      isAuthorized: map['isAuthorized'] ?? false,
+      isAuthorized: map['authorized'] ?? false,
     );
   }
 
-  String toJson() => json.encode(toMap());
+  factory AuthResponse.fromJson(String source) =>
+      AuthResponse.fromMap(json.decode(source));
 
-  factory AuthResponse.fromJson(String source) => AuthResponse.fromMap(json.decode(source));
+  @override
+  String toString() => 'AuthResponse(isAuthorized: $isAuthorized)';
 }
