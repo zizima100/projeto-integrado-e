@@ -7,9 +7,9 @@ import 'package:thespot/ui/screens/main_screen.dart';
 class TheSpotRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/auth':
+      case AUTH_ROUTE:
         return MaterialPageRoute(builder: (_) => const AuthScreen());
-      case '/main':
+      case MAIN_ROUTE:
         return MaterialPageRoute(builder: (_) => const MainScreen());
       default:
         return MaterialPageRoute(
@@ -20,6 +20,6 @@ class TheSpotRouter {
     }
   }
 
-  static const AUTH_ROUTE = '/auth';
+  static const AUTH_ROUTE = '/';
   static const MAIN_ROUTE = '/main';
 }
