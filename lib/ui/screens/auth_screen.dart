@@ -13,30 +13,25 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final progressState =
-            Provider.of<AuthStore>(context, listen: false).state;
+        var progressState = context.watch<AuthStore>().state;
+        debugPrint('progressState => $progressState');
         if (progressState == LoginProgressState.SUCCESS) {
-          debugPrint('LoginProgressState.SUCCESS');
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                TheSpotRouter.MAIN_ROUTE, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(TheSpotRouter.MAIN_ROUTE, (route) => false);
           });
         }
         if (progressState == LoginProgressState.UNAUTHORIZED) {
-          debugPrint('LoginProgressState.UNAUTHORIZED');
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            showErrorDialog(
-                context, 'Infelizmente você não tem acesso ao The Spot =(');
+            showErrorDialog(context, 'Acesso não autorizado');
           });
+          context.read<AuthStore>().onKnowError();
         }
         if (progressState == LoginProgressState.ERROR) {
-          debugPrint('LoginProgressState.ERROR');
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            showErrorDialog(
-                context, 'Ocorreu um erro inesperado, tente novamente.');
+            showErrorDialog(context, 'Ocorreu um erro inesperado.');
           });
+          context.read<AuthStore>().onKnowError();
         }
-        debugPrint('LoginProgressState.INITIAL');
         return Container(
           decoration: const BoxDecoration(
             color: Colors.black,
@@ -94,9 +89,7 @@ class AuthScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(context.layoutHeight(2)),
                 color: Colors.white,
               ),
-              margin: EdgeInsets.symmetric(
-                  horizontal: context.layoutHeight(5),
-                  vertical: context.layoutHeight(12)),
+              margin: EdgeInsets.symmetric(horizontal: context.layoutHeight(5), vertical: context.layoutHeight(12)),
               alignment: Alignment.center,
               child: Padding(
                 padding: EdgeInsets.all(context.layoutHeight(2)),

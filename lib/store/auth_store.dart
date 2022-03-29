@@ -29,8 +29,8 @@ abstract class _AuthStore with Store {
 
   @action
   Future<void> login() async {
+    print('authstore login');
     try {
-      print('Store login');
       AuthEmployee user = await _signInRepository.signIn();
       print('user = $user');
       _state = LoginProgressState.LOADING;
@@ -44,6 +44,11 @@ abstract class _AuthStore with Store {
     } catch (e) {
       _state = LoginProgressState.ERROR;
     }
+  }
+
+  @action
+  void onKnowError() {
+    _state = LoginProgressState.INITIAL;
   }
 }
 
