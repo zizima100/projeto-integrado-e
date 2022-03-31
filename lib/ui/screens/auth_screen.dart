@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:thespot/store/auth_state.dart';
 import 'package:thespot/store/auth_store.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/routes/routes.dart';
@@ -15,22 +16,20 @@ class AuthScreen extends StatelessWidget {
       builder: (_) {
         var progressState = context.watch<AuthStore>().state;
         debugPrint('progressState => $progressState');
-        if (progressState == LoginProgressState.SUCCESS) {
+        if (progressState is AuthStateSuccess) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
             Navigator.of(context).pushNamedAndRemoveUntil(TheSpotRouter.MAIN_ROUTE, (route) => false);
           });
         }
-        if (progressState == LoginProgressState.UNAUTHORIZED) {
+        if (progressState is AuthStateUnauthorized) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
             showErrorDialog(context, 'Acesso não autorizado');
           });
-          context.read<AuthStore>().onKnowError();
         }
-        if (progressState == LoginProgressState.ERROR) {
+        if (progressState is AuthStateFailure) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
             showErrorDialog(context, 'Ocorreu um erro inesperado.');
           });
-          context.read<AuthStore>().onKnowError();
         }
         return Container(
           decoration: const BoxDecoration(
@@ -64,7 +63,7 @@ class AuthScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              if (progressState == LoginProgressState.LOADING)
+              if (progressState is AuthStateLoading)
                 const Align(
                   alignment: Alignment.bottomCenter,
                   child: LinearProgressIndicator(),

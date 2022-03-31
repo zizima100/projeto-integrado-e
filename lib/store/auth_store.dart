@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'package:thespot/repository/auth_repository.dart';
 import 'package:thespot/repository/google_sign_in_repository.dart';
+import 'package:thespot/store/auth_state.dart';
 
 part 'auth_store.g.dart';
 
@@ -22,40 +24,28 @@ abstract class _AuthStore with Store {
   late AuthRepository _authRepository;
 
   @observable
-  LoginProgressState _state = LoginProgressState.INITIAL;
+  AuthState _state = AuthStateInitial();
 
   @computed
-  LoginProgressState get state => _state;
+  AuthState get state => _state;
 
   @action
   Future<void> login() async {
-    print('authstore login');
+    debugPrint('authstore login');
     try {
       AuthEmployee user = await _signInRepository.signIn();
-      print('user = $user');
-      _state = LoginProgressState.LOADING;
+      debugPrint('user = $user');
+      _state = AuthStateLoading();
       final isAuthorized = await _authRepository.isAuthorized(user.email);
-      print('isAuthorized = $isAuthorized');
+      debugPrint('isAuthorized = $isAuthorized');
       if (isAuthorized) {
-        _state = LoginProgressState.SUCCESS;
+        _state = AuthStateSuccess();
       } else {
-        _state = LoginProgressState.UNAUTHORIZED;
+        _state = AuthStateUnauthorized();
       }
     } catch (e) {
-      _state = LoginProgressState.ERROR;
+      debugPrint('Exception in login: $e');
+      _state = AuthStateFailure();
     }
   }
-
-  @action
-  void onKnowError() {
-    _state = LoginProgressState.INITIAL;
-  }
-}
-
-enum LoginProgressState {
-  INITIAL,
-  LOADING,
-  ERROR,
-  SUCCESS,
-  UNAUTHORIZED,
 }

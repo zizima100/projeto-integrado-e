@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:thespot/data/exceptions/auth_exceptions.dart';
 import 'package:thespot/data/model/auth_employee.dart';
@@ -25,6 +26,7 @@ class GoogleSignInRepositoryImpl implements GoogleSignInRepository {
       }
       return AuthEmployee.fromGoogleSignAccount(account);
     } catch (e) {
+      debugPrint('google signIn exception: $e');
       throw const GoogleSignInException();
     }
   }
