@@ -4,23 +4,23 @@ import 'package:flutter/material.dart' show debugPrint;
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'package:thespot/repository/auth_repository.dart';
-import 'package:thespot/repository/google_sign_in_repository.dart';
+import 'package:thespot/repository/sso_repository.dart';
 import 'package:thespot/store/auth_state.dart';
 
 part 'auth_store.g.dart';
 
 class AuthStore extends _AuthStore with _$AuthStore {
   AuthStore({
-    required GoogleSignInRepository signInRepository,
+    required SsoRepository ssoRepository,
     required AuthRepository authRepository,
   }) {
-    super._signInRepository = signInRepository;
+    super._ssoRepository = ssoRepository;
     super._authRepository = authRepository;
   }
 }
 
 abstract class _AuthStore with Store {
-  late GoogleSignInRepository _signInRepository;
+  late SsoRepository _ssoRepository;
   late AuthRepository _authRepository;
 
   @observable
@@ -30,10 +30,10 @@ abstract class _AuthStore with Store {
   AuthState get state => _state;
 
   @action
-  Future<void> login() async {
+  Future<void> signIn() async {
     debugPrint('authstore login');
     try {
-      AuthEmployee user = await _signInRepository.signIn();
+      AuthEmployee user = await _ssoRepository.signIn();
       debugPrint('user = $user');
       _state = AuthStateLoading();
       final isAuthorized = await _authRepository.isAuthorized(user.email);

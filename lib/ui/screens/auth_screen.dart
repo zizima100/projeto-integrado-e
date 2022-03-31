@@ -126,7 +126,7 @@ class _GoogleSignInButton extends StatelessWidget {
           ),
         ),
         onPressed: () async {
-          await Provider.of<AuthStore>(context, listen: false).login();
+          await Provider.of<AuthStore>(context, listen: false).signIn();
         },
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: context.layoutHeight(1.8)),
