@@ -1,6 +1,7 @@
 import 'package:thespot/data/model/employee_email.dart';
-import 'package:thespot/data/provider/auth_provider.dart';
-import 'package:thespot/repository/auth_repository.dart';
+import 'package:thespot/data/provider/auth/auth_provider.dart';
+
+import 'auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthProvider provider;

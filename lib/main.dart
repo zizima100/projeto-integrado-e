@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:thespot/data/provider/auth_provider_impl.dart';
-import 'package:thespot/repository/auth_repository_impl.dart';
-import 'package:thespot/repository/google_sign_in_repository.dart';
-import 'package:thespot/store/auth_store.dart';
+import 'package:thespot/data/provider/auth/auth_provider_impl.dart';
+import 'package:thespot/repository/auth/auth_repository_impl.dart';
+import 'package:thespot/repository/auth/google_sign_in_repository.dart';
+import 'package:thespot/store/auth/auth_store.dart';
 import 'package:thespot/ui/routes/routes.dart';
 
 void main() {

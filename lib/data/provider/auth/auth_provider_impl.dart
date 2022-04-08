@@ -1,8 +1,9 @@
 import 'package:http/http.dart';
 import 'package:thespot/data/model/auth_response.dart';
 import 'package:thespot/data/model/employee_email.dart';
-import 'package:thespot/data/provider/auth_provider.dart';
 import 'package:thespot/data/provider/constants.dart';
+
+import 'auth_provider.dart';
 
 class AuthProviderImpl implements AuthProvider {
   late final Client client;

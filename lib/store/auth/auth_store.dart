@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart' show debugPrint;
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/model/auth_employee.dart';
-import 'package:thespot/repository/auth_repository.dart';
-import 'package:thespot/repository/sso_repository.dart';
-import 'package:thespot/store/auth_state.dart';
+import 'package:thespot/repository/auth/auth_repository.dart';
+import 'package:thespot/repository/auth/sso_repository.dart';
+
+import 'auth_state.dart';
 
 part 'auth_store.g.dart';
 

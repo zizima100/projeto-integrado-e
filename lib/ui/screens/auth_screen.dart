@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:thespot/store/auth_state.dart';
-import 'package:thespot/store/auth_store.dart';
+import 'package:thespot/store/auth/auth_state.dart';
+import 'package:thespot/store/auth/auth_store.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/routes/routes.dart';
 
