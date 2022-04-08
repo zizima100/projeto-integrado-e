@@ -18,7 +18,7 @@ class AuthScreen extends StatelessWidget {
         debugPrint('progressState => $progressState');
         if (progressState is AuthStateSuccess) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamedAndRemoveUntil(TheSpotRouter.MAIN_ROUTE, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(TheSpotRouter.RESERVE_OR_QUERY_SCREEN, (route) => false);
           });
         }
         if (progressState is AuthStateUnauthorized) {

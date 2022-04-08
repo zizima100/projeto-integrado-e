@@ -1,16 +1,16 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:thespot/ui/screens/auth_screen.dart';
-import 'package:thespot/ui/screens/main_screen.dart';
+import 'package:thespot/ui/screens/auth/auth_screen.dart';
+import 'package:thespot/ui/screens/reserve_or_query/reserve_or_query_screen.dart';
 
 class TheSpotRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AUTH_ROUTE:
         return MaterialPageRoute(builder: (_) => const AuthScreen());
-      case MAIN_ROUTE:
-        return MaterialPageRoute(builder: (_) => const MainScreen());
+      case RESERVE_OR_QUERY_SCREEN:
+        return MaterialPageRoute(builder: (_) => const ReserveOrQueryScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
@@ -21,5 +21,5 @@ class TheSpotRouter {
   }
 
   static const AUTH_ROUTE = '/';
-  static const MAIN_ROUTE = '/main';
+  static const RESERVE_OR_QUERY_SCREEN = '/main';
 }
