@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart' show debugPrint;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:thespot/data/exceptions/auth_exceptions.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'sso_repository.dart';
 
@@ -19,15 +17,10 @@ class GoogleSignInRepository implements SsoRepository {
 
   @override
   Future<AuthEmployee> signIn() async {
-    try {
-      final account = await _googleSignIn.signIn();
-      if (account == null) {
-        throw const GoogleSignInException();
-      }
-      return AuthEmployee.fromGoogleSignAccount(account);
-    } catch (e) {
-      debugPrint('google signIn exception: $e');
-      throw const GoogleSignInException();
+    final account = await _googleSignIn.signIn();
+    if (account == null) {
+      throw Exception();
     }
+    return AuthEmployee.fromGoogleSignAccount(account);
   }
 }
