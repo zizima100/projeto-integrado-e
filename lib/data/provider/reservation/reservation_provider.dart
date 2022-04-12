@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart' show debugPrint;
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -31,6 +33,6 @@ class ReservationProvider implements IReservationProvider {
       Uri.parse(Constants.API_URL + '/reservation?email=$_email'),
     );
     debugPrint('response => ${response.body}');
-    return ReservationResponse.fromJson(response.body);
+    return ReservationResponse.fromMap(jsonDecode(response.body)['reservation']);
   }
 }

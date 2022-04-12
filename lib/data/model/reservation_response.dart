@@ -20,11 +20,11 @@ class ReservationResponse {
   factory ReservationResponse.fromMap(Map<String, dynamic> map) {
     return ReservationResponse(
       id: map['id'],
-      createdAt: map['createdAt'],
-      reservationDate: map['reservationDate'],
+      createdAt: map['created_at'],
+      reservationDate: map['reservation_date'],
       status: map['status'],
-      employeeEmail: map['employeeEmail'],
-      idSeat: map['idSeat'],
+      employeeEmail: map['employee_email'],
+      idSeat: map['id_seat'],
     );
   }
 
