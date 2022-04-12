@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ReservationResponse {
   final int id;
   final String createdAt;
@@ -18,11 +20,11 @@ class ReservationResponse {
   factory ReservationResponse.fromMap(Map<String, dynamic> map) {
     return ReservationResponse(
       id: map['id'],
-      createdAt: map['created_at'],
-      reservationDate: map['reservation_date'],
+      createdAt: map['createdAt'],
+      reservationDate: map['reservationDate'],
       status: map['status'],
-      employeeEmail: map['employee_email'],
-      idSeat: map['id_seat'],
+      employeeEmail: map['employeeEmail'],
+      idSeat: map['idSeat'],
     );
   }
 
@@ -30,4 +32,6 @@ class ReservationResponse {
   String toString() {
     return 'ReservationResponse(id: $id, createdAt: $createdAt, reservationDate: $reservationDate, status: $status, employeeEmail: $employeeEmail, idSeat: $idSeat)';
   }
+
+  factory ReservationResponse.fromJson(String source) => ReservationResponse.fromMap(json.decode(source));
 }

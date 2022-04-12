@@ -1,5 +1,7 @@
+import 'package:thespot/data/model/has_reservation_response.dart';
 import 'package:thespot/data/model/reservation_response.dart';
 
 abstract class IReservationProvider {
-  Future<List<ReservationResponse>> getReservations();
+  Future<HasReservationResponse> hasReservation();
+  Future<ReservationResponse> getReservation();
 }

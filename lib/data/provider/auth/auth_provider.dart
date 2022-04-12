@@ -6,15 +6,15 @@ import 'package:thespot/data/provider/constants.dart';
 import 'auth_provider_interface.dart';
 
 class AuthProvider implements IAuthProvider {
-  late final Client client;
+  late final Client _client;
 
   AuthProvider() {
-    client = Client();
+    _client = Client();
   }
 
   @override
   Future<AuthResponse> isAuthorized(EmployeeEmailRequest email) async {
-    Response response = await client.get(
+    Response response = await _client.get(
       Uri.parse(Constants.API_URL + '/auth?email=$email'),
     );
     return AuthResponse.fromJson(response.body);
