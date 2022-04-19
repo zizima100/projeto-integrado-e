@@ -9,35 +9,59 @@ class TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: context.layoutWidth(5),
+        vertical: context.layoutWidth(3),
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.black,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SvgPicture.asset(
+            'assets/logo_with_chair.svg',
+            fit: BoxFit.fill,
+            height: context.layoutWidth(18),
+          ),
+          const _LogoutButton(),
+        ],
+      ),
+    );
+  }
+}
+
+class _LogoutButton extends StatelessWidget {
+  const _LogoutButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
       children: [
-        SvgPicture.asset('assets/logo_with_chair.svg'),
-        Column(
-          children: [
-            const Text(
-              'Sair',
-              style: TextStyle(
-                decoration: TextDecoration.none,
-                color: Colors.white,
-                fontSize: 15,
-              ),
+        const Text(
+          'Sair',
+          style: TextStyle(
+            decoration: TextDecoration.none,
+            color: Colors.white,
+            fontSize: 15,
+          ),
+        ),
+        Material(
+          color: Colors.transparent,
+          child: IconButton(
+            onPressed: () async {
+              await Provider.of<AuthStore>(context, listen: false).signOut();
+            },
+            icon: Icon(
+              Icons.logout,
+              color: Colors.white,
+              size: context.layoutWidth(5.5),
             ),
-            Material(
-              color: Colors.transparent,
-              child: IconButton(
-                onPressed: () async {
-                  await Provider.of<AuthStore>(context, listen: false).signOut();
-                },
-                icon: const Icon(
-                  Icons.logout,
-                  color: Colors.white,
-                ),
-                iconSize: context.layoutWidth(6),
-              ),
-            ),
-          ],
-        )
+            iconSize: 0,
+            padding: EdgeInsets.zero,
+          ),
+        ),
       ],
     );
   }
