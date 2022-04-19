@@ -51,4 +51,10 @@ abstract class _AuthStore with Store {
       _state = AuthStateFailure();
     }
   }
+
+  @action
+  Future<void> signOut() async {
+    await _ssoRepository.signOut();
+    _state = AuthStateLoggout();
+  }
 }

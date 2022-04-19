@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'sso_repository.dart';
@@ -23,4 +24,7 @@ class GoogleSignInRepository implements SsoRepository {
     }
     return AuthEmployee.fromGoogleSignAccount(account);
   }
+
+  @override
+  Future<void> signOut() async => await _googleSignIn.signOut();
 }

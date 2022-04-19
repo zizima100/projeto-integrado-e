@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:thespot/routes/routes.dart';
 import 'package:thespot/store/auth/auth_state.dart';
 import 'package:thespot/store/auth/auth_store.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
-import 'package:thespot/ui/routes/routes.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class AuthScreen extends StatelessWidget {
         debugPrint('progressState => $progressState');
         if (progressState is AuthStateSuccess) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamedAndRemoveUntil(TheSpotRouter.RESERVE_OR_QUERY_SCREEN, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(TheSpotRouter.RESERVE_OR_QUERY_ROUTE, (route) => false);
           });
         }
         if (progressState is AuthStateUnauthorized) {

@@ -9,7 +9,7 @@ class TheSpotRouter {
     switch (settings.name) {
       case AUTH_ROUTE:
         return MaterialPageRoute(builder: (_) => const AuthScreen());
-      case RESERVE_OR_QUERY_SCREEN:
+      case RESERVE_OR_QUERY_ROUTE:
         return MaterialPageRoute(builder: (_) => const ReserveOrQueryScreen());
       default:
         return MaterialPageRoute(
@@ -21,5 +21,5 @@ class TheSpotRouter {
   }
 
   static const AUTH_ROUTE = '/';
-  static const RESERVE_OR_QUERY_SCREEN = '/main';
+  static const RESERVE_OR_QUERY_ROUTE = '/main';
 }

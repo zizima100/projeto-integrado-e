@@ -7,10 +7,10 @@ import 'package:thespot/data/provider/reservation/reservation_provider.dart';
 import 'package:thespot/repository/auth/auth_repository.dart';
 import 'package:thespot/repository/auth/google_sign_in_repository.dart';
 import 'package:thespot/repository/reservation/reservation_repository.dart';
+import 'package:thespot/routes/routes.dart';
 import 'package:thespot/store/auth/auth_store.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
-import 'package:thespot/ui/routes/routes.dart';
 
 void main() {
   GetIt.I.registerSingleton<AuthEmployee>(AuthEmployee.initial());

@@ -9,3 +9,5 @@ class AuthStateFailure implements AuthState {}
 class AuthStateLoading implements AuthState {}
 
 class AuthStateUnauthorized implements AuthState {}
+
+class AuthStateLoggout implements AuthState {}

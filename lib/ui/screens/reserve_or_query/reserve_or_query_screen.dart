@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:thespot/routes/routes.dart';
+import 'package:thespot/store/auth/auth_state.dart';
+import 'package:thespot/store/auth/auth_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_state.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
+import 'package:thespot/ui/components/topbar.dart';
 import 'package:thespot/ui/screens/reserve/reserve_screen.dart';
 
 class ReserveOrQueryScreen extends StatelessWidget {
@@ -10,14 +14,26 @@ class ReserveOrQueryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO replace message with actual widgets
-    return Observer(builder: (_) {
-      var state = context.watch<ReserveOrQueryStore>().state;
-      debugPrint('ReserveOrQueryScreen state => $state');
-      return ReserveScreen();
-      if (state is ReserveOrQueryQuerying) {
-      }
-      return Container();
-    });
+    return SafeArea(
+      child: Observer(builder: (_) {
+        var reserveOrQueryState = context.watch<ReserveOrQueryStore>().state;
+        var authState = context.watch<AuthStore>().state;
+        if (authState is AuthStateLoggout) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              TheSpotRouter.AUTH_ROUTE,
+              (route) => false,
+            );
+          });
+        }
+        debugPrint('ReserveOrQueryScreen state => $reserveOrQueryState');
+        return Column(
+          children: const [
+            TopBar(),
+            ReserveScreen(),
+          ],
+        );
+      }),
+    );
   }
 }
