@@ -8,6 +8,7 @@ import 'package:thespot/repository/auth/auth_repository.dart';
 import 'package:thespot/repository/auth/google_sign_in_repository.dart';
 import 'package:thespot/repository/reservation/reservation_repository.dart';
 import 'package:thespot/store/auth/auth_store.dart';
+import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/routes/routes.dart';
 
@@ -33,6 +34,9 @@ class TheSpotApp extends StatelessWidget {
           create: (context) => ReserveOrQueryStore(
             repository: ReservationRepository(provider: ReservationProvider()),
           ),
+        ),
+        Provider(
+          create: (context) => ReserveStore(),
         ),
       ],
       builder: (context, _) => MaterialApp(
