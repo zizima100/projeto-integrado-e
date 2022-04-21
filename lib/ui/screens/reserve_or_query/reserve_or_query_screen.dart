@@ -7,6 +7,7 @@ import 'package:thespot/store/auth/auth_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_state.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/components/topbar.dart';
+import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/screens/reserve/reserve_screen.dart';
 
 class ReserveOrQueryScreen extends StatelessWidget {
@@ -14,6 +15,8 @@ class ReserveOrQueryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double topBarLayoutRatio = 20;
+
     return SafeArea(
       child: Observer(builder: (_) {
         var reserveOrQueryState = context.watch<ReserveOrQueryStore>().state;
@@ -28,9 +31,19 @@ class ReserveOrQueryScreen extends StatelessWidget {
         }
         debugPrint('ReserveOrQueryScreen state => $reserveOrQueryState');
         return Column(
-          children: const [
-            TopBar(),
-            ReserveScreen(),
+          children: [
+            SizedBox(
+              height: context.layoutHeight(topBarLayoutRatio),
+              child: const TopBar(),
+            ),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: const ReserveScreen(),
+              ),
+            ),
           ],
         );
       }),
