@@ -25,4 +25,9 @@ abstract class _ReserveStore with Store {
 
   @action
   void confirm() => _state = ReserveStateSuccess();
+
+  @action
+  void resetState() {
+    _state = ReserveStateInitial();
+  }
 }

@@ -38,6 +38,7 @@ class ReserveOrQueryScreen extends StatelessWidget {
             ),
             Expanded(
               child: Container(
+                constraints: const BoxConstraints.expand(),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
