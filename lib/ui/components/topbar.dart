@@ -37,6 +37,8 @@ class _LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double iconPaddingSize = 8;
+
     return Column(
       children: [
         const Text(
@@ -44,22 +46,25 @@ class _LogoutButton extends StatelessWidget {
           style: TextStyle(
             decoration: TextDecoration.none,
             color: Colors.white,
-            fontSize: 15,
+            fontSize: 11,
           ),
         ),
         Material(
           color: Colors.transparent,
-          child: IconButton(
-            onPressed: () async {
-              await Provider.of<AuthStore>(context, listen: false).signOut();
-            },
-            icon: Icon(
-              Icons.logout,
-              color: Colors.white,
-              size: context.layoutWidth(5.5),
+          child: SizedBox(
+            height: context.layoutWidth(iconPaddingSize),
+            width: context.layoutWidth(iconPaddingSize),
+            child: IconButton(
+              onPressed: () async {
+                await Provider.of<AuthStore>(context, listen: false).signOut();
+              },
+              icon: Icon(
+                Icons.logout,
+                color: Colors.white,
+                size: context.layoutWidth(6),
+              ),
+              padding: EdgeInsets.zero,
             ),
-            iconSize: 0,
-            padding: EdgeInsets.zero,
           ),
         ),
       ],
