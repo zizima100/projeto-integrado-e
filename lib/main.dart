@@ -9,11 +9,12 @@ import 'package:thespot/repository/auth/google_sign_in_repository.dart';
 import 'package:thespot/repository/reservation/reservation_repository.dart';
 import 'package:thespot/routes/routes.dart';
 import 'package:thespot/store/auth/auth_store.dart';
+import 'package:thespot/store/query/query_store.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 
 void main() {
-  GetIt.I.registerSingleton<AuthEmployee>(AuthEmployee.initial());
+  GetIt.I.registerSingleton<AuthEmployee>(AuthEmployee());
   runApp(const TheSpotApp());
 }
 
@@ -22,6 +23,10 @@ class TheSpotApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reservationRepository = ReservationRepository(
+      provider: ReservationProvider(),
+    );
+
     return MultiProvider(
       providers: [
         Provider(
@@ -32,11 +37,16 @@ class TheSpotApp extends StatelessWidget {
         ),
         Provider(
           create: (context) => ReserveOrQueryStore(
-            repository: ReservationRepository(provider: ReservationProvider()),
+            repository: reservationRepository,
           ),
         ),
         Provider(
           create: (context) => ReserveStore(),
+        ),
+        Provider(
+          create: (context) => QueryStore(
+            repository: reservationRepository,
+          ),
         ),
       ],
       builder: (context, _) => MaterialApp(

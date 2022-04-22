@@ -1,8 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:thespot/ui/screens/auth/auth_screen.dart';
-import 'package:thespot/ui/screens/reserve_or_query/reserve_or_query_screen.dart';
+import 'package:thespot/ui/screens/auth_screen.dart';
+import 'package:thespot/ui/screens/reserve_or_query_screen.dart';
 
 class TheSpotRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {

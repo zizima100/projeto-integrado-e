@@ -6,15 +6,12 @@ class AuthEmployee {
   String? photoUrl;
 
   AuthEmployee({
-    required this.email,
-    required this.name,
-    required this.photoUrl,
+    this.email = '',
+    this.name,
+    this.photoUrl,
   });
 
-  factory AuthEmployee.initial() =>
-      AuthEmployee(email: '', name: null, photoUrl: null);
-
-  set(AuthEmployee auth) {
+  void set(AuthEmployee auth) {
     email = auth.email;
     name = auth.name;
     photoUrl = auth.photoUrl;

@@ -6,7 +6,8 @@ import 'reserve_or_query_state.dart';
 
 part 'reserve_or_query_store.g.dart';
 
-class ReserveOrQueryStore extends _ReserveOrQueryStore with _$ReserveOrQueryStore {
+class ReserveOrQueryStore extends _ReserveOrQueryStore
+    with _$ReserveOrQueryStore {
   ReserveOrQueryStore({
     required IReservationRepository repository,
   }) {
@@ -28,6 +29,7 @@ abstract class _ReserveOrQueryStore with Store {
   Future<void> _reserveOrQuery() async {
     try {
       bool hasReservation = await _repository.hasReservation();
+      debugPrint('ReserveOrQueryStore hasReservation => $hasReservation');
       if (hasReservation) {
         _state = ReserveOrQueryQuerying();
       } else {

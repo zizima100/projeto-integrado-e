@@ -38,7 +38,7 @@ abstract class _AuthStore with Store {
       AuthEmployee employee = await _ssoRepository.signIn();
       debugPrint('employee = $employee');
       _state = AuthStateLoading();
-      GetIt.I<AuthEmployee>().set(employee);
+      GetIt.instance<AuthEmployee>().set(employee);
       final isAuthorized = await _authRepository.isAuthorized(employee.email);
       debugPrint('isAuthorized = $isAuthorized');
       if (isAuthorized) {

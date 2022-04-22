@@ -15,15 +15,16 @@ class ReservationProvider implements IReservationProvider {
 
   ReservationProvider() {
     _client = Client();
-    _email = GetIt.I<AuthEmployee>().email;
   }
 
   @override
   Future<HasReservationResponse> hasReservation() async {
+    _email = GetIt.I<AuthEmployee>().email;
+    debugPrint('hasReservation email => $_email');
     Response response = await _client.get(
       Uri.parse(Constants.API_URL + '/hasReservation?email=$_email'),
     );
-    debugPrint('response => ${response.body}');
+    debugPrint('hasReservation response => ${response.body}');
     return HasReservationResponse.fromJson(response.body);
   }
 
@@ -33,6 +34,7 @@ class ReservationProvider implements IReservationProvider {
       Uri.parse(Constants.API_URL + '/reservation?email=$_email'),
     );
     debugPrint('response => ${response.body}');
-    return ReservationResponse.fromMap(jsonDecode(response.body)['reservation']);
+    return ReservationResponse.fromMap(
+        jsonDecode(response.body)['reservation']);
   }
 }

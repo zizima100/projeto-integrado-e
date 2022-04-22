@@ -8,7 +8,8 @@ import 'package:thespot/store/reserve_or_query/reserve_or_query_state.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/components/topbar.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
-import 'package:thespot/ui/screens/reserve/reserve_screen.dart';
+import 'package:thespot/ui/screens/query_screen.dart';
+import 'package:thespot/ui/screens/reserve_screen.dart';
 
 class ReserveOrQueryScreen extends StatelessWidget {
   const ReserveOrQueryScreen({Key? key}) : super(key: key);
@@ -42,7 +43,9 @@ class ReserveOrQueryScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
-                child: const ReserveScreen(),
+                child: reserveOrQueryState is ReserveOrQueryReserving
+                    ? const ReserveScreen()
+                    : const QueryScreen(),
               ),
             ),
           ],

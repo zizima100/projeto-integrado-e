@@ -13,8 +13,10 @@ class HasReservationResponse {
     );
   }
 
-  factory HasReservationResponse.fromJson(String source) => HasReservationResponse.fromMap(json.decode(source));
+  factory HasReservationResponse.fromJson(String source) =>
+      HasReservationResponse.fromMap(json.decode(source));
 
   @override
-  String toString() => 'HasReservationResponse(hasReservation: $hasReservation)';
+  String toString() =>
+      'HasReservationResponse(hasReservation: $hasReservation)';
 }
