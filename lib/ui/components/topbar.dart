@@ -57,8 +57,8 @@ class _LogoutButton extends StatelessWidget {
             height: context.layoutWidth(iconPaddingSize),
             width: context.layoutWidth(iconPaddingSize),
             child: IconButton(
-              onPressed: () async {
-                await Provider.of<AuthStore>(context, listen: false).signOut();
+              onPressed: () {
+                Provider.of<AuthStore>(context, listen: false).signOut();
                 Provider.of<ReserveStore>(context, listen: false).resetState();
               },
               icon: Icon(

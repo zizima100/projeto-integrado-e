@@ -27,6 +27,19 @@ abstract class _ReserveStore with Store {
   void confirm() => _state = ReserveStateSuccess();
 
   @action
+  void backState() {
+    if (_state is ReserveStateInitial) {
+      return;
+    }
+    if (_state is ReserveStateChooseDateAndSeat) {
+      _state = ReserveStateInitial();
+    }
+    if (_state is ReserveStateConfirmation) {
+      _state = ReserveStateChooseDateAndSeat(isLoading: false);
+    }
+  }
+
+  @action
   void resetState() {
     _state = ReserveStateInitial();
   }

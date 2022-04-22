@@ -17,20 +17,18 @@ class LargeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => onPressed(),
-      style: ElevatedButton.styleFrom(
-        primary: buttonColor,
-        padding: EdgeInsets.symmetric(
-          horizontal: context.layoutWidth(22),
-          vertical: context.layoutWidth(4),
-        ),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: textColor,
-          fontSize: 15,
+    return SizedBox(
+      height: context.layoutWidth(13),
+      width: context.layoutWidth(70),
+      child: ElevatedButton(
+        onPressed: () => onPressed(),
+        style: ElevatedButton.styleFrom(primary: buttonColor),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 15,
+          ),
         ),
       ),
     );
