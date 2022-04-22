@@ -34,7 +34,7 @@ abstract class _QueryStore with Store {
       String dateFormatted = DateFormat('dd/MM/yyyy').format(reservation.date);
       debugPrint('reservation dateFormatted => $dateFormatted');
       _state = QueryStateQueried(
-          date: dateFormatted, seat: 'Cadeira: $reservation.idSeat}');
+          date: dateFormatted, seat: 'Cadeira ${reservation.idSeat}');
     } catch (e) {
       debugPrint('Error on _query: $e');
       _state = QueryStateFailure();

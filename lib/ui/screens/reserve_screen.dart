@@ -7,6 +7,7 @@ import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/ui/colors.dart';
 import 'package:thespot/ui/components/buttons.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
+import 'package:thespot/ui/text_style.dart';
 
 class ReserveScreen extends StatelessWidget {
   const ReserveScreen({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _StartReservationWidget extends StatelessWidget {
           Text(
             'Você ainda não reservou nenhum lugar. Deseja reservar?',
             textAlign: TextAlign.center,
-            style: _DefaultTextStyle.title,
+            style: TheSpotTextStyle.title,
           ),
           SizedBox(height: context.layoutHeight(6.5)),
           SvgPicture.asset('assets/girl_seated.svg'),
@@ -99,10 +100,10 @@ class _ConfirmReservationWidget extends StatelessWidget {
               children: [
                 TextSpan(
                   text: date,
-                  style: _DefaultTextStyle.defaultText,
+                  style: TheSpotTextStyle.defaultStyle,
                 )
               ],
-              style: _DefaultTextStyle.defaultText
+              style: TheSpotTextStyle.defaultStyle
                   .copyWith(fontWeight: FontWeight.bold),
             ),
           ),
@@ -112,10 +113,10 @@ class _ConfirmReservationWidget extends StatelessWidget {
               children: [
                 TextSpan(
                   text: seat,
-                  style: _DefaultTextStyle.defaultText,
+                  style: TheSpotTextStyle.defaultStyle,
                 )
               ],
-              style: _DefaultTextStyle.defaultText
+              style: TheSpotTextStyle.defaultStyle
                   .copyWith(fontWeight: FontWeight.bold),
             ),
           ),
@@ -142,7 +143,7 @@ class _SuccessReservationWidget extends StatelessWidget {
         children: [
           Text(
             'Reserva feita com sucesso!',
-            style: _DefaultTextStyle.defaultText.copyWith(
+            style: TheSpotTextStyle.defaultStyle.copyWith(
               fontSize: 20,
               color: TheSpotColors.green,
               fontWeight: FontWeight.bold,
@@ -152,7 +153,7 @@ class _SuccessReservationWidget extends StatelessWidget {
           SizedBox(height: context.layoutHeight(3)),
           Text(
             'Te enviamos um email com todas as informações para você não esquecer.',
-            style: _DefaultTextStyle.defaultText,
+            style: TheSpotTextStyle.defaultStyle,
             textAlign: TextAlign.center,
           ),
           SizedBox(height: context.layoutHeight(5)),
@@ -273,7 +274,7 @@ class _BackButtonText extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: context.layoutWidth(18)),
             child: Text(
               text,
-              style: _DefaultTextStyle.title,
+              style: TheSpotTextStyle.title,
               textAlign: TextAlign.center,
             ),
           ),
@@ -281,19 +282,6 @@ class _BackButtonText extends StatelessWidget {
       ],
     );
   }
-}
-
-class _DefaultTextStyle {
-  static TextStyle get title =>
-      defaultText.copyWith(fontSize: 20, color: TheSpotColors.blue);
-
-  static TextStyle get defaultText => const TextStyle(
-        color: TheSpotColors.lightGray,
-        decoration: TextDecoration.none,
-        fontFamily: 'Roboto',
-        fontSize: 19,
-        fontWeight: FontWeight.normal,
-      );
 }
 
 class _ButtonStyle {
