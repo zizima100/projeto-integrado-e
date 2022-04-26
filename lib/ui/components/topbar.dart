@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:thespot/store/auth/auth_store.dart';
+import 'package:thespot/store/query/query_store.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
+import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
 
 class TopBar extends StatelessWidget {
@@ -60,6 +62,8 @@ class _LogoutButton extends StatelessWidget {
               onPressed: () {
                 Provider.of<AuthStore>(context, listen: false).signOut();
                 Provider.of<ReserveStore>(context, listen: false).resetState();
+                Provider.of<ReserveOrQueryStore>(context, listen: false).resetState();
+                Provider.of<QueryStore>(context, listen: false).resetState();
               },
               icon: Icon(
                 Icons.logout,

@@ -13,7 +13,6 @@ class QueryStore extends _QueryStore with _$QueryStore {
     required IReservationRepository repository,
   }) {
     super._repository = repository;
-    super._query();
   }
 }
 
@@ -27,17 +26,21 @@ abstract class _QueryStore with Store {
   QueryState get state => _state;
 
   @action
-  Future<void> _query() async {
+  Future<void> query() async {
     try {
       Reservation reservation = await _repository.getReservation();
       debugPrint('reservation => $reservation');
       String dateFormatted = DateFormat('dd/MM/yyyy').format(reservation.date);
       debugPrint('reservation dateFormatted => $dateFormatted');
-      _state = QueryStateQueried(
-          date: dateFormatted, seat: 'Cadeira ${reservation.idSeat}');
+      _state = QueryStateQueried(date: dateFormatted, seat: 'Cadeira ${reservation.idSeat}');
     } catch (e) {
       debugPrint('Error on _query: $e');
       _state = QueryStateFailure();
     }
+  }
+
+  @action
+  void resetState() {
+    _state = QueryStateLoading();
   }
 }

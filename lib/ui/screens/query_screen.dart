@@ -12,9 +12,12 @@ class QueryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var queryStore = context.watch<QueryStore>();
+    queryStore.query();
+
     return Observer(
       builder: (context) {
-        var state = context.watch<QueryStore>().state;
+        var state = queryStore.state;
         debugPrint('QueryScreen state => $state');
         if (state is QueryStateQueried) {
           return _ReserveQuerySeat(
@@ -32,8 +35,7 @@ class _ReserveQuerySeat extends StatelessWidget {
   final String date;
   final String seat;
 
-  const _ReserveQuerySeat({Key? key, required this.date, required this.seat})
-      : super(key: key);
+  const _ReserveQuerySeat({Key? key, required this.date, required this.seat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

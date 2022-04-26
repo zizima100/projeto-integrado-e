@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:thespot/routes/routes.dart';
 import 'package:thespot/store/auth/auth_state.dart';
 import 'package:thespot/store/auth/auth_store.dart';
+import 'package:thespot/store/query/query_store.dart';
+import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_state.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/components/topbar.dart';
@@ -16,11 +18,14 @@ class ReserveOrQueryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('ReserveOrQueryScreen build');
+    var reserveOrQueryStore = context.watch<ReserveOrQueryStore>();
+    reserveOrQueryStore.reserveOrQuery();
     const double topBarLayoutRatio = 20;
 
     return SafeArea(
       child: Observer(builder: (_) {
-        var reserveOrQueryState = context.watch<ReserveOrQueryStore>().state;
+        var reserveOrQueryState = reserveOrQueryStore.state;
         var authState = context.watch<AuthStore>().state;
         if (authState is AuthStateLoggout) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
@@ -43,9 +48,7 @@ class ReserveOrQueryScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
-                child: reserveOrQueryState is ReserveOrQueryReserving
-                    ? const ReserveScreen()
-                    : const QueryScreen(),
+                child: reserveOrQueryState is ReserveOrQueryReserving ? const ReserveScreen() : const QueryScreen(),
               ),
             ),
           ],

@@ -11,7 +11,7 @@ import 'package:thespot/data/provider/reservation/reservation_provider_interface
 
 class ReservationProvider implements IReservationProvider {
   late final Client _client;
-  late final String _email;
+  String? _email;
 
   ReservationProvider() {
     _client = Client();
