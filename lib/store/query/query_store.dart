@@ -18,6 +18,7 @@ class QueryStore extends _QueryStore with _$QueryStore {
 
 abstract class _QueryStore with Store {
   late IReservationRepository _repository;
+  Reservation? _reservation;
 
   @observable
   QueryState _state = QueryStateLoading();
@@ -28,11 +29,8 @@ abstract class _QueryStore with Store {
   @action
   Future<void> query() async {
     try {
-      Reservation reservation = await _repository.getReservation();
-      debugPrint('reservation => $reservation');
-      String dateFormatted = DateFormat('dd/MM/yyyy').format(reservation.date);
-      debugPrint('reservation dateFormatted => $dateFormatted');
-      _state = QueryStateQueried(date: dateFormatted, seat: 'Cadeira ${reservation.idSeat}');
+      _reservation = await _repository.getReservation();
+      _state = QueryStateQueried(date: _formatDate, seat: _formatSeatId);
     } catch (e) {
       debugPrint('Error on _query: $e');
       _state = QueryStateFailure();
@@ -40,7 +38,16 @@ abstract class _QueryStore with Store {
   }
 
   @action
+  void detailedReservation() {
+    _state = QueryStateDetailed(date: _formatDate, seat: _formatSeatId);
+  }
+
+  @action
   void resetState() {
     _state = QueryStateLoading();
   }
+
+  String get _formatSeatId => 'Cadeira ${_reservation!.idSeat}';
+
+  String get _formatDate => DateFormat('dd/MM/yyyy').format(_reservation!.date);
 }

@@ -13,8 +13,7 @@ class ReservationRepository implements IReservationRepository {
 
   @override
   Future<bool> hasReservation() async {
-    HasReservationResponse hasReservationResponse =
-        await provider.hasReservation();
+    HasReservationResponse hasReservationResponse = await provider.hasReservation();
     return hasReservationResponse.hasReservation;
   }
 
