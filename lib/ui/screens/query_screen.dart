@@ -8,6 +8,7 @@ import 'package:thespot/ui/components/buttons.dart';
 import 'package:thespot/ui/components/text_span.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/text_style.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class QueryScreen extends StatelessWidget {
   const QueryScreen({Key? key}) : super(key: key);
@@ -132,6 +133,13 @@ class _ReserveDetailed extends StatelessWidget {
           date: date,
           seat: seat,
         ),
+        SizedBox(height: context.layoutWidth(5)),
+        QrImage(
+          data: 'This is a simple QR code',
+          version: QrVersions.auto,
+          size: 320,
+          gapless: false,
+        )
       ],
     );
   }
