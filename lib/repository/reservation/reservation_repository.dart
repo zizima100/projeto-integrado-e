@@ -22,4 +22,9 @@ class ReservationRepository implements IReservationRepository {
     ReservationResponse response = await provider.getReservation();
     return Reservation.fromResponse(response);
   }
+
+  @override
+  Future<void> cancel(int id) async {
+    final bool cancelled = await provider.cancel(id);
+  }
 }

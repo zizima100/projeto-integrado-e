@@ -47,6 +47,32 @@ abstract class _QueryStore with Store {
     _state = QueryStateLoading();
   }
 
+  @action
+  void backToInitial() {
+    _state = QueryStateQueried(date: _formatDate, seat: _formatSeatId);
+  }
+
+  @action
+  void confirmCancellation() {
+    _state = QueryStateConfirmCancellation();
+  }
+
+  @action
+  void backToReservationDetailed() {
+    _state = QueryStateDetailed(date: _formatDate, seat: _formatSeatId);
+  }
+
+  @action
+  void cancelReservation() {
+    try {
+      _repository.cancel(_reservation!.id);
+      _state = QueryStateReservationCancelled();
+    } on Exception catch (e) {
+      print('QueryStore cancelReservation error: $e');
+      _state = QueryStateFailure();
+    }
+  }
+
   String get _formatSeatId => 'Cadeira ${_reservation!.idSeat}';
 
   String get _formatDate => DateFormat('dd/MM/yyyy').format(_reservation!.date);

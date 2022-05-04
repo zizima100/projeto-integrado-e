@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:thespot/routes/route_arguments.dart';
+import 'package:thespot/routes/routes.dart';
 import 'package:thespot/store/query/query_state.dart';
 import 'package:thespot/store/query/query_store.dart';
 import 'package:thespot/ui/colors.dart';
@@ -32,6 +34,20 @@ class QueryScreen extends StatelessWidget {
             date: state.date,
             seat: state.seat,
           );
+        } else if (state is QueryStateConfirmCancellation) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            Navigator.of(context).pushNamed(
+              TheSpotRouter.CONFIRMATION_ROUTE,
+              arguments: ConfirmationScreenArguments(
+                text: 'Tem certeza que deseja cancelar sua reserva atual?',
+                onYesTap: () => queryStore.cancelReservation(),
+                onNoTap: () {
+                  Navigator.pop(context);
+                  queryStore.backToReservationDetailed();
+                },
+              ),
+            );
+          });
         }
         return Container();
       },
@@ -139,6 +155,28 @@ class _ReserveDetailed extends StatelessWidget {
           version: QrVersions.auto,
           size: 320,
           gapless: false,
+        ),
+        SizedBox(height: context.layoutWidth(5)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            DefaultSmallButton(
+              text: 'Voltar',
+              onPressed: () {
+                Provider.of<QueryStore>(context, listen: false).backToInitial();
+              },
+              buttonColor: TheSpotColors.blue,
+            ),
+            DefaultSmallButton(
+              onPressed: () {
+                Provider.of<QueryStore>(context, listen: false).confirmCancellation();
+              },
+              text: 'Cancelar Reserva',
+              textColor: TheSpotColors.blue,
+              buttonColor: Colors.white,
+              borderColor: TheSpotColors.blue,
+            ),
+          ],
         )
       ],
     );

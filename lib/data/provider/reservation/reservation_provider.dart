@@ -12,6 +12,9 @@ import 'package:thespot/data/provider/reservation/reservation_provider_interface
 class ReservationProvider implements IReservationProvider {
   late final Client _client;
   String? _email;
+  static const _jsonHeader = {
+    "Content-Type": "application/json"
+  };
 
   ReservationProvider() {
     _client = Client();
@@ -34,7 +37,30 @@ class ReservationProvider implements IReservationProvider {
       Uri.parse(Constants.API_URL + '/reservation?email=$_email'),
     );
     debugPrint('response => ${response.body}');
-    return ReservationResponse.fromMap(
-        jsonDecode(response.body)['reservation']);
+    return ReservationResponse.fromMap(jsonDecode(response.body)['reservation']);
+  }
+
+  @override
+  Future<bool> cancel(int id) async {
+    debugPrint('cancelling $id');
+    Map<String, dynamic> body = {
+      ..._jsonHeader
+    };
+    body.addAll({
+      'reservationId': id,
+    });
+    
+    Response response = await _client.put(
+      Uri.parse(Constants.API_URL + '/cancel-reservation'),
+      body: jsonEncode({
+        'reservationId': id,
+      }),
+      headers: _jsonHeader,
+    );
+    debugPrint('cancel response => ${response.body}');
+    if (json.decode(response.body)['ok']) {
+      return true;
+    }
+    return true;
   }
 }

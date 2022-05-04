@@ -4,4 +4,5 @@ import 'package:thespot/data/model/reservation_response.dart';
 abstract class IReservationProvider {
   Future<HasReservationResponse> hasReservation();
   Future<ReservationResponse> getReservation();
+  Future<bool> cancel(int id);
 }

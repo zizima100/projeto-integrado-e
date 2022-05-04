@@ -23,3 +23,7 @@ class QueryStateDetailed implements QueryState {
     required this.seat,
   });
 }
+
+class QueryStateConfirmCancellation implements QueryState {}
+
+class QueryStateReservationCancelled implements QueryState {}
