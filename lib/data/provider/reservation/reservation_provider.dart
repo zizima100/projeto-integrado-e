@@ -49,7 +49,7 @@ class ReservationProvider implements IReservationProvider {
     body.addAll({
       'reservationId': id,
     });
-    
+
     Response response = await _client.put(
       Uri.parse(Constants.API_URL + '/cancel-reservation'),
       body: jsonEncode({

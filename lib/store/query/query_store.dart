@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' show debugPrint;
-import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/model/reservation.dart';
 import 'package:thespot/repository/reservation/reservation_repository_interface.dart';
@@ -30,7 +29,7 @@ abstract class _QueryStore with Store {
   Future<void> query() async {
     try {
       _reservation = await _repository.getReservation();
-      _state = QueryStateQueried(date: _formatDate, seat: _formatSeatId);
+      _state = QueryStateQueried(_reservation!);
     } catch (e) {
       debugPrint('Error on _query: $e');
       _state = QueryStateFailure();
@@ -39,7 +38,7 @@ abstract class _QueryStore with Store {
 
   @action
   void detailedReservation() {
-    _state = QueryStateDetailed(date: _formatDate, seat: _formatSeatId);
+    _state = QueryStateDetailed(_reservation!);
   }
 
   @action
@@ -49,7 +48,7 @@ abstract class _QueryStore with Store {
 
   @action
   void backToInitial() {
-    _state = QueryStateQueried(date: _formatDate, seat: _formatSeatId);
+    _state = QueryStateQueried(_reservation!);
   }
 
   @action
@@ -59,7 +58,7 @@ abstract class _QueryStore with Store {
 
   @action
   void backToReservationDetailed() {
-    _state = QueryStateDetailed(date: _formatDate, seat: _formatSeatId);
+    _state = QueryStateDetailed(_reservation!);
   }
 
   @action
@@ -72,8 +71,4 @@ abstract class _QueryStore with Store {
       _state = QueryStateFailure();
     }
   }
-
-  String get _formatSeatId => 'Cadeira ${_reservation!.idSeat}';
-
-  String get _formatDate => DateFormat('dd/MM/yyyy').format(_reservation!.date);
 }

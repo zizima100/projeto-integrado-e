@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:thespot/data/model/reservation_response.dart';
 
 class Reservation {
@@ -19,4 +21,14 @@ class Reservation {
 
   @override
   String toString() => 'Reservation(date: $date, idSeat: $idSeat)';
+
+  Map<String, dynamic> _toMap() {
+    return {
+      'id': id,
+      'date': date.toIso8601String(),
+      'idSeat': idSeat,
+    };
+  }
+
+  String toJson() => json.encode(_toMap());
 }

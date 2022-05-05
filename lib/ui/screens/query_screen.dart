@@ -31,6 +31,7 @@ class QueryScreen extends StatelessWidget {
           );
         } else if (state is QueryStateDetailed) {
           return _ReserveDetailed(
+            reservationJson: state.reservationJson,
             date: state.date,
             seat: state.seat,
           );
@@ -132,6 +133,7 @@ class _WhyItCantReserve extends StatelessWidget {
 }
 
 class _ReserveDetailed extends StatelessWidget {
+  final String reservationJson;
   final String date;
   final String seat;
 
@@ -139,6 +141,7 @@ class _ReserveDetailed extends StatelessWidget {
     Key? key,
     required this.date,
     required this.seat,
+    required this.reservationJson,
   }) : super(key: key);
 
   @override
@@ -151,7 +154,7 @@ class _ReserveDetailed extends StatelessWidget {
         ),
         SizedBox(height: context.layoutWidth(5)),
         QrImage(
-          data: 'This is a simple QR code',
+          data: reservationJson,
           version: QrVersions.auto,
           size: 320,
           gapless: false,
