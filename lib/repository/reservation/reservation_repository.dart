@@ -13,7 +13,8 @@ class ReservationRepository implements IReservationRepository {
 
   @override
   Future<bool> hasReservation() async {
-    HasReservationResponse hasReservationResponse = await provider.hasReservation();
+    HasReservationResponse hasReservationResponse =
+        await provider.hasReservation();
     return hasReservationResponse.hasReservation;
   }
 
@@ -24,7 +25,7 @@ class ReservationRepository implements IReservationRepository {
   }
 
   @override
-  Future<void> cancel(int id) async {
-    final bool cancelled = await provider.cancel(id);
+  Future<bool> cancel(int id) async {
+    return await provider.cancel(id);
   }
 }

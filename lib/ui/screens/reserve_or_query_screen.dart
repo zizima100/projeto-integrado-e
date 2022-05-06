@@ -48,7 +48,9 @@ class ReserveOrQueryScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Colors.white,
                 ),
-                child: reserveOrQueryState is ReserveOrQueryReserving ? const ReserveScreen() : const QueryScreen(),
+                child: reserveOrQueryState is ReserveOrQueryReserving
+                    ? const ReserveScreen()
+                    : const QueryScreen(),
               ),
             ),
           ],

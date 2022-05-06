@@ -18,50 +18,55 @@ class ConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      child: Padding(
-        padding: EdgeInsets.all(context.layoutWidth(9)),
-        child: Stack(
-          children: [
-            Positioned(
-              height: 0,
-              right: 0,
-              child: IconButton(
-                onPressed: () => onNoTap(),
-                icon: Icon(
-                  Icons.close,
-                  size: context.layoutWidth(9),
+    return WillPopScope(
+      onWillPop: () {
+        onNoTap();
+        return Future.value(true);
+      },
+      child: Material(
+        color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.all(context.layoutWidth(9)),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () => onNoTap(),
+                  icon: Icon(
+                    Icons.close,
+                    size: context.layoutWidth(9),
+                  ),
                 ),
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text,
-                  style: TheSpotTextStyle.defaultStyle.copyWith(fontSize: 22),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    DefaultSmallButton(
-                      onPressed: () => onNoTap(),
-                      text: 'Não',
-                    ),
-                    SizedBox(height: context.layoutHeight(10)),
-                    DefaultSmallButton(
-                      onPressed: () => onYesTap(),
-                      text: 'Sim',
-                      borderColor: TheSpotColors.blue,
-                      textColor: TheSpotColors.blue,
-                      buttonColor: Colors.white,
-                    ),
-                  ],
-                ),
-              ],
-            )
-          ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text,
+                    style: TheSpotTextStyle.defaultStyle.copyWith(fontSize: 22),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DefaultSmallButton(
+                        onPressed: () => onNoTap(),
+                        text: 'Não',
+                      ),
+                      SizedBox(height: context.layoutHeight(10)),
+                      DefaultSmallButton(
+                        onPressed: () => onYesTap(),
+                        text: 'Sim',
+                        borderColor: TheSpotColors.blue,
+                        textColor: TheSpotColors.blue,
+                        buttonColor: Colors.white,
+                      ),
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

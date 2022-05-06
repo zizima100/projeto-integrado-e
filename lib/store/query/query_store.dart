@@ -62,10 +62,14 @@ abstract class _QueryStore with Store {
   }
 
   @action
-  void cancelReservation() {
+  Future<void> cancelReservation() async {
     try {
-      _repository.cancel(_reservation!.id);
-      _state = QueryStateReservationCancelled();
+      bool cancelled = await _repository.cancel(_reservation!.id);
+      if (cancelled) {
+        _state = QueryStateReservationCancelled();
+      } else {
+        _state = QueryStateFailure();
+      }
     } on Exception catch (e) {
       print('QueryStore cancelReservation error: $e');
       _state = QueryStateFailure();
