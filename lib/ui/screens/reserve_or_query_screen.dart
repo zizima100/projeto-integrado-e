@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:thespot/routes/routes.dart';
 import 'package:thespot/store/auth/auth_state.dart';
 import 'package:thespot/store/auth/auth_store.dart';
-import 'package:thespot/store/query/query_store.dart';
-import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_state.dart';
 import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/components/topbar.dart';
@@ -36,23 +34,32 @@ class ReserveOrQueryScreen extends StatelessWidget {
           });
         }
         debugPrint('ReserveOrQueryScreen state => $reserveOrQueryState');
-        return Column(
+        return Stack(
           children: [
-            SizedBox(
-              height: context.layoutHeight(topBarLayoutRatio),
-              child: const TopBar(),
-            ),
-            Expanded(
-              child: Container(
-                constraints: const BoxConstraints.expand(),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+            Column(
+              children: [
+                SizedBox(
+                  height: context.layoutHeight(topBarLayoutRatio),
+                  child: const TopBar(),
                 ),
-                child: reserveOrQueryState is ReserveOrQueryReserving
-                    ? const ReserveScreen()
-                    : const QueryScreen(),
-              ),
+                Expanded(
+                  child: Container(
+                    constraints: const BoxConstraints.expand(),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: reserveOrQueryState is ReserveOrQueryReserving
+                        ? const ReserveScreen()
+                        : const QueryScreen(),
+                  ),
+                ),
+              ],
             ),
+            if (reserveOrQueryState is ReserveOrQueryLoading)
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: LinearProgressIndicator(),
+              )
           ],
         );
       }),

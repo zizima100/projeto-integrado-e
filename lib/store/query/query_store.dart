@@ -28,6 +28,7 @@ abstract class _QueryStore with Store {
   @action
   Future<void> query() async {
     try {
+      _state = QueryStateLoading();
       _reservation = await _repository.getReservation();
       _state = QueryStateQueried(_reservation!);
     } catch (e) {
@@ -39,11 +40,6 @@ abstract class _QueryStore with Store {
   @action
   void detailedReservation() {
     _state = QueryStateDetailed(_reservation!);
-  }
-
-  @action
-  void resetState() {
-    _state = QueryStateLoading();
   }
 
   @action

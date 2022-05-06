@@ -61,10 +61,6 @@ class _LogoutButton extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 Provider.of<AuthStore>(context, listen: false).signOut();
-                Provider.of<ReserveStore>(context, listen: false).resetState();
-                Provider.of<ReserveOrQueryStore>(context, listen: false)
-                    .resetState();
-                Provider.of<QueryStore>(context, listen: false).resetState();
               },
               icon: Icon(
                 Icons.logout,

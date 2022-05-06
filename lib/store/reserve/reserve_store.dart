@@ -38,9 +38,4 @@ abstract class _ReserveStore with Store {
       _state = ReserveStateChooseDateAndSeat(isLoading: false);
     }
   }
-
-  @action
-  void resetState() {
-    _state = ReserveStateInitial();
-  }
 }

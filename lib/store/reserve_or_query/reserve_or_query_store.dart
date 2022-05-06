@@ -27,6 +27,7 @@ abstract class _ReserveOrQueryStore with Store {
   @action
   Future<void> reserveOrQuery() async {
     try {
+      _state = ReserveOrQueryLoading();
       bool hasReservation = await _repository.hasReservation();
       debugPrint('ReserveOrQueryStore hasReservation => $hasReservation');
       if (hasReservation) {
@@ -43,10 +44,5 @@ abstract class _ReserveOrQueryStore with Store {
   @action
   void reserveCancelled() {
     _state = ReserveOrQueryReserving();
-  }
-
-  @action
-  void resetState() {
-    _state = ReserveOrQueryLoading();
   }
 }
