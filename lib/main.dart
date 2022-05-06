@@ -41,7 +41,9 @@ class TheSpotApp extends StatelessWidget {
           ),
         ),
         Provider(
-          create: (context) => ReserveStore(),
+          create: (context) => ReserveStore(
+            repository: reservationRepository,
+          ),
         ),
         Provider(
           create: (context) => QueryStore(

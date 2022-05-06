@@ -1,10 +1,13 @@
+import 'package:thespot/data/model/seat.dart';
+
 abstract class ReserveState {}
 
 class ReserveStateInitial implements ReserveState {}
 
 class ReserveStateChooseDateAndSeat implements ReserveState {
-  final bool isLoading;
-  ReserveStateChooseDateAndSeat({required this.isLoading});
+  final List<Seat> seats;
+
+  ReserveStateChooseDateAndSeat({required this.seats});
 }
 
 class ReserveStateConfirmation implements ReserveState {
@@ -15,3 +18,5 @@ class ReserveStateConfirmation implements ReserveState {
 }
 
 class ReserveStateSuccess implements ReserveState {}
+
+class ReserveStateFailure implements ReserveState {}

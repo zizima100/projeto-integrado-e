@@ -6,6 +6,7 @@ import 'package:thespot/store/reserve/reserve_state.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/ui/colors.dart';
 import 'package:thespot/ui/components/buttons.dart';
+import 'package:thespot/ui/components/seats_widget.dart';
 import 'package:thespot/ui/components/text_span.dart';
 import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/text_style.dart';
@@ -23,8 +24,10 @@ class ReserveScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (state is ReserveStateInitial) const _StartReservationWidget(),
-            if (state is ReserveStateChooseDateAndSeat) const _ChooseDateAndSeatWidget(),
-            if (state is ReserveStateConfirmation) _ConfirmReservationWidget(date: state.date, seat: state.seat),
+            if (state is ReserveStateChooseDateAndSeat)
+              const _ChooseDateAndSeatWidget(),
+            if (state is ReserveStateConfirmation)
+              _ConfirmReservationWidget(date: state.date, seat: state.seat),
             if (state is ReserveStateSuccess) const _SuccessReservationWidget(),
           ],
         );
@@ -52,7 +55,8 @@ class _StartReservationWidget extends StatelessWidget {
         ],
       ),
       buttonStyle: _ButtonStyle(text: 'Reservar Lugar'),
-      onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).start(),
+      onButtonTap: () =>
+          Provider.of<ReserveStore>(context, listen: false).start(),
     );
   }
 }
@@ -63,14 +67,10 @@ class _ChooseDateAndSeatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _ReservationBackButtonContainer(
-      content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(),
-        ],
-      ),
+      content: Center(child: InterativeSeatsWidget()),
       buttonStyle: _ButtonStyle(text: 'Reservar Lugar'),
-      onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).chooseSeat(),
+      onButtonTap: () =>
+          Provider.of<ReserveStore>(context, listen: false).chooseSeat(),
       backButtonText: 'Selecione uma data e um lugar',
     );
   }
@@ -80,7 +80,9 @@ class _ConfirmReservationWidget extends StatelessWidget {
   final String date;
   final String seat;
 
-  const _ConfirmReservationWidget({Key? key, required this.date, required this.seat}) : super(key: key);
+  const _ConfirmReservationWidget(
+      {Key? key, required this.date, required this.seat})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +94,10 @@ class _ConfirmReservationWidget extends StatelessWidget {
           DateAndSitHighlighted(date: date, seat: seat),
         ],
       ),
-      buttonStyle: _ButtonStyle(text: 'Confirmar Reserva', color: TheSpotColors.green),
-      onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).confirm(),
+      buttonStyle:
+          _ButtonStyle(text: 'Confirmar Reserva', color: TheSpotColors.green),
+      onButtonTap: () =>
+          Provider.of<ReserveStore>(context, listen: false).confirm(),
       backButtonText: 'Confirme sua reserva',
     );
   }
@@ -158,7 +162,8 @@ class _ReservationBackButtonContainer extends StatelessWidget {
           ),
           _BackButtonText(
             text: backButtonText,
-            onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).backState(),
+            onButtonTap: () =>
+                Provider.of<ReserveStore>(context, listen: false).backState(),
           ),
           Expanded(child: content)
         ],
