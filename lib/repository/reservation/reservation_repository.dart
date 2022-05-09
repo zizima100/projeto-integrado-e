@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:thespot/data/model/has_reservation_response.dart';
 import 'package:thespot/data/model/reservation.dart';
 import 'package:thespot/data/model/reservation_response.dart';
@@ -17,8 +15,7 @@ class ReservationRepository implements IReservationRepository {
 
   @override
   Future<bool> hasReservation() async {
-    HasReservationResponse hasReservationResponse =
-        await provider.hasReservation();
+    HasReservationResponse hasReservationResponse = await provider.hasReservation();
     return hasReservationResponse.hasReservation;
   }
 
@@ -34,12 +31,15 @@ class ReservationRepository implements IReservationRepository {
   }
 
   @override
-  Future<List<Seat>> getSeatsInNext4Days() {
+  Future<List<List<Seat>>> getSeatsInNext4Days() {
     return Future.value(List.generate(
-      Constants.NUMBER_OF_SEATS,
-      (index) => Seat(
-        id: index,
-        status: index < 10 ? SeatStatus.available : SeatStatus.unavailable,
+      4,
+      (index) => List.generate(
+        Constants.NUMBER_OF_SEATS,
+        (index) => Seat(
+          id: index,
+          status: index < 10 ? SeatStatus.available : SeatStatus.unavailable,
+        ),
       ),
     ));
   }

@@ -5,9 +5,13 @@ abstract class ReserveState {}
 class ReserveStateInitial implements ReserveState {}
 
 class ReserveStateChooseDateAndSeat implements ReserveState {
+  final int dayIndex;
   final List<Seat> seats;
 
-  ReserveStateChooseDateAndSeat({required this.seats});
+  ReserveStateChooseDateAndSeat({
+    required this.seats,
+    required this.dayIndex,
+  });
 }
 
 class ReserveStateConfirmation implements ReserveState {

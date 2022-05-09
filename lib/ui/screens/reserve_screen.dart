@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/store/reserve/reserve_state.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/ui/colors.dart';
@@ -24,10 +26,8 @@ class ReserveScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (state is ReserveStateInitial) const _StartReservationWidget(),
-            if (state is ReserveStateChooseDateAndSeat)
-              const _ChooseDateAndSeatWidget(),
-            if (state is ReserveStateConfirmation)
-              _ConfirmReservationWidget(date: state.date, seat: state.seat),
+            if (state is ReserveStateChooseDateAndSeat) const _ChooseDateAndSeatWidget(),
+            if (state is ReserveStateConfirmation) _ConfirmReservationWidget(date: state.date, seat: state.seat),
             if (state is ReserveStateSuccess) const _SuccessReservationWidget(),
           ],
         );
@@ -55,8 +55,7 @@ class _StartReservationWidget extends StatelessWidget {
         ],
       ),
       buttonStyle: _ButtonStyle(text: 'Reservar Lugar'),
-      onButtonTap: () =>
-          Provider.of<ReserveStore>(context, listen: false).start(),
+      onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).start(),
     );
   }
 }
@@ -67,11 +66,59 @@ class _ChooseDateAndSeatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _ReservationBackButtonContainer(
-      content: Center(child: InterativeSeatsWidget()),
+      content: Column(
+        children: [
+          SizedBox(height: context.layoutHeight(2)),
+          const Flexible(
+            flex: 1,
+            child: _ChooseDateWidget(),
+          ),
+          SizedBox(height: context.layoutHeight(1.5)),
+          const Flexible(
+            flex: 5,
+            child: InterativeSeatsWidget(),
+          ),
+        ],
+      ),
       buttonStyle: _ButtonStyle(text: 'Reservar Lugar'),
-      onButtonTap: () =>
-          Provider.of<ReserveStore>(context, listen: false).chooseSeat(),
+      onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).chooseSeat(),
       backButtonText: 'Selecione uma data e um lugar',
+    );
+  }
+}
+
+class _ChooseDateWidget extends StatelessWidget {
+  const _ChooseDateWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: List.generate(
+        Constants.NUMBER_OF_CHOOSEN_DAYS,
+        (dayIndex) => Observer(
+          builder: (context) {
+            var state = context.watch<ReserveStore>().state;
+            var isSelected = false;
+            if (state is ReserveStateChooseDateAndSeat) {
+              isSelected = state.dayIndex == dayIndex;
+            }
+            return TheSpotButton(
+              text: DateFormat(Constants.DD_MM).format(DateTime.now().add(
+                Duration(days: dayIndex),
+              )),
+              height: context.layoutWidth(12),
+              width: context.layoutWidth(18),
+              onPressed: () {
+                Provider.of<ReserveStore>(context, listen: false).onDayTap(dayIndex);
+              },
+              textColor: isSelected ? Colors.white : Colors.black,
+              buttonColor: isSelected ? TheSpotColors.blue : TheSpotColors.veryLightGray,
+              fontSize: 13,
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -80,9 +127,7 @@ class _ConfirmReservationWidget extends StatelessWidget {
   final String date;
   final String seat;
 
-  const _ConfirmReservationWidget(
-      {Key? key, required this.date, required this.seat})
-      : super(key: key);
+  const _ConfirmReservationWidget({Key? key, required this.date, required this.seat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +139,8 @@ class _ConfirmReservationWidget extends StatelessWidget {
           DateAndSitHighlighted(date: date, seat: seat),
         ],
       ),
-      buttonStyle:
-          _ButtonStyle(text: 'Confirmar Reserva', color: TheSpotColors.green),
-      onButtonTap: () =>
-          Provider.of<ReserveStore>(context, listen: false).confirm(),
+      buttonStyle: _ButtonStyle(text: 'Confirmar Reserva', color: TheSpotColors.green),
+      onButtonTap: () => Provider.of<ReserveStore>(context, listen: false).confirm(),
       backButtonText: 'Confirme sua reserva',
     );
   }
@@ -162,8 +205,10 @@ class _ReservationBackButtonContainer extends StatelessWidget {
           ),
           _BackButtonText(
             text: backButtonText,
-            onButtonTap: () =>
-                Provider.of<ReserveStore>(context, listen: false).backState(),
+            onButtonTap: () => Provider.of<ReserveStore>(
+              context,
+              listen: false,
+            ).backState(),
           ),
           Expanded(child: content)
         ],
@@ -196,7 +241,7 @@ class _ReservationDefaultContainer extends StatelessWidget {
           children: [
             Expanded(child: content),
             Padding(
-              padding: EdgeInsets.only(bottom: context.layoutHeight(10)),
+              padding: EdgeInsets.only(bottom: context.layoutHeight(5)),
               child: DefaultLargeButton(
                 onPressed: () => onButtonTap(),
                 text: buttonStyle.text,

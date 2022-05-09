@@ -1,5 +1,7 @@
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/model/seat.dart';
+import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/repository/reservation/reservation_repository_interface.dart';
 import 'package:thespot/store/reserve/reserve_state.dart';
 import 'package:collection/collection.dart';
@@ -16,7 +18,10 @@ class ReserveStore extends _ReserveStore with _$ReserveStore {
 
 abstract class _ReserveStore with Store {
   late IReservationRepository _repository;
-  List<Seat>? _seats;
+  List<List<Seat>>? _allSeats;
+  List<Seat>? _currentSeatsDay;
+  int? _dayIndexSelected;
+  int? _seatIdSelected;
 
   @observable
   ReserveState _state = ReserveStateInitial();
@@ -27,18 +32,35 @@ abstract class _ReserveStore with Store {
   @action
   Future<void> start() async {
     try {
-      _seats = await _repository.getSeatsInNext4Days();
-      print('seats => $_seats');
-      _state = ReserveStateChooseDateAndSeat(seats: _seats!);
+      _allSeats = await _repository.getSeatsInNext4Days();
+      print('_allSeats => $_allSeats');
+      _dayIndexSelected = 0;
+      _currentSeatsDay = _allSeats![_dayIndexSelected!];
+      _state = ReserveStateChooseDateAndSeat(
+        seats: _currentSeatsDay!,
+        dayIndex: _dayIndexSelected!,
+      );
     } catch (e) {
       _state = ReserveStateFailure();
     }
   }
 
+  /// `indexDay` should be in [0,4] range.
+  /// 0 is today, 1 tomorrow and so on.
+  @action
+  void onDayTap(int dayIndex) {
+    _dayIndexSelected = dayIndex;
+    _currentSeatsDay = _allSeats![dayIndex];
+    _state = ReserveStateChooseDateAndSeat(
+      seats: _currentSeatsDay!,
+      dayIndex: dayIndex,
+    );
+  }
+
   @action
   void onSeatTap(int id) {
-    int index = _seatIndexFromId(id);
-    var seat = _seats![index];
+    _seatIdSelected = _seatIndexFromId(id);
+    var seat = _currentSeatsDay![_seatIdSelected!];
     print('seat tapped = $seat');
     SeatStatus status = seat.status;
     if (status.isUnavailable) {
@@ -46,27 +68,29 @@ abstract class _ReserveStore with Store {
     }
 
     if (status.isAvailable) {
-      Seat? selectedSeat =
-          _seats!.firstWhereOrNull((seat) => seat.status.isSelected);
+      Seat? selectedSeat = _currentSeatsDay!.firstWhereOrNull((seat) => seat.status.isSelected);
       if (selectedSeat != null) {
         int selectedIndex = _seatIndexFromId(selectedSeat.id);
-        _seats![selectedIndex].unselect();
-        _seats![index].select();
+        _currentSeatsDay![selectedIndex].unselect();
+        _currentSeatsDay![_seatIdSelected!].select();
       } else {
-        _seats![index].select();
+        _currentSeatsDay![_seatIdSelected!].select();
       }
     } else if (status.isSelected) {
-      _seats![index].unselect();
+      _currentSeatsDay![_seatIdSelected!].unselect();
     }
-    _state = ReserveStateChooseDateAndSeat(seats: _seats!);
+    _state = ReserveStateChooseDateAndSeat(
+      seats: _currentSeatsDay!,
+      dayIndex: _dayIndexSelected!,
+    );
   }
 
-  int _seatIndexFromId(int id) => _seats!.indexWhere((seat) => seat.id == id);
+  int _seatIndexFromId(int id) => _currentSeatsDay!.indexWhere((seat) => seat.id == id);
 
   @action
   void chooseSeat() => _state = ReserveStateConfirmation(
-        date: '12/03/2022',
-        seat: 'Cadeira 12',
+        date: DateFormat(Constants.DD_MM_YYYY).format(DateTime.now().add(Duration(days: _dayIndexSelected!))),
+        seat: 'Cadeira $_seatIdSelected',
       );
 
   @action
@@ -81,7 +105,7 @@ abstract class _ReserveStore with Store {
       _state = ReserveStateInitial();
     }
     if (_state is ReserveStateConfirmation) {
-      _state = ReserveStateChooseDateAndSeat(seats: _seats!);
+      _state = ReserveStateChooseDateAndSeat(seats: _currentSeatsDay!, dayIndex: _dayIndexSelected!);
     }
   }
 
