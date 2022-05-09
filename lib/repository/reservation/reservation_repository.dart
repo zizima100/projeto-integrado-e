@@ -31,16 +31,7 @@ class ReservationRepository implements IReservationRepository {
   }
 
   @override
-  Future<List<List<Seat>>> getSeatsInNext4Days() {
-    return Future.value(List.generate(
-      4,
-      (index) => List.generate(
-        Constants.NUMBER_OF_SEATS,
-        (index) => Seat(
-          id: index,
-          status: index < 10 ? SeatStatus.available : SeatStatus.unavailable,
-        ),
-      ),
-    ));
+  Future<List<List<Seat>>> getSeatsInNext4Days() async {
+    return (await provider.getSeatsInNext4Days()).seats;
   }
 }

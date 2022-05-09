@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'package:thespot/data/model/has_reservation_response.dart';
 import 'package:thespot/data/model/reservation_response.dart';
+import 'package:thespot/data/model/seats_response.dart';
 import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/data/provider/reservation/reservation_provider_interface.dart';
 
@@ -62,5 +63,14 @@ class ReservationProvider implements IReservationProvider {
       return true;
     }
     return true;
+  }
+
+  @override
+  Future<SeatsResponse> getSeatsInNext4Days() async {
+    Response response = await _client.get(Uri.parse(
+      Constants.API_URL + '/four-days-seats-data',
+    ));
+    debugPrint('response => ${response.body}');
+    return SeatsResponse.fromJson(response.body);
   }
 }
