@@ -15,18 +15,60 @@ class InterativeSeatsWidget extends StatelessWidget {
       builder: (_) {
         var reserveState = context.watch<ReserveStore>().state;
         if (reserveState is ReserveStateChooseDateAndSeat) {
-          return GridView.count(
-            crossAxisCount: 4,
-            children: reserveState.seats.map((seat) {
-              return SeatWidget(
-                id: seat.id,
-                color: getColor(seat.status),
-              );
-            }).toList(),
+          return _SeatsGridView(
+            seats: reserveState.seats,
+            onSeatTap: (int id) {
+              Provider.of<ReserveStore>(context, listen: false).onSeatTap(id);
+            },
           );
         }
         return Container();
       },
+    );
+  }
+}
+
+class ReadOnlySeatsWidget extends StatelessWidget {
+  final int selectedIndex;
+
+  const ReadOnlySeatsWidget({
+    Key? key,
+    required this.selectedIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class _SeatsGridView extends StatelessWidget {
+  final List<Seat> seats;
+  final Function(int)? onSeatTap;
+
+  const _SeatsGridView({
+    Key? key,
+    required this.seats,
+    this.onSeatTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 4,
+      children: seats.map((seat) {
+        return GestureDetector(
+          onTap: () {
+            if (onSeatTap != null) {
+              onSeatTap!(seat.id);
+            }
+          },
+          child: SeatWidget(
+            id: seat.id,
+            color: getColor(seat.status),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -53,18 +95,13 @@ class SeatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Provider.of<ReserveStore>(context, listen: false).onSeatTap(id);
-      },
-      child: Container(
-        margin: const EdgeInsets.all(10),
-        color: color,
-        child: Center(
-          child: Text(
-            id.toString(),
-            style: TheSpotTextStyle.defaultStyle,
-          ),
+    return Container(
+      margin: const EdgeInsets.all(10),
+      color: color,
+      child: Center(
+        child: Text(
+          id.toString(),
+          style: TheSpotTextStyle.defaultStyle,
         ),
       ),
     );

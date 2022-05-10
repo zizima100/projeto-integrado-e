@@ -61,7 +61,6 @@ abstract class _ReserveStore with Store {
 
   @action
   void onSeatTap(int id) {
-    _seatIdSelected = id;
     int seatIndexSelected = _seatIndexFromId(id);
     var seat = _currentSeatsDay![seatIndexSelected];
     print('seat tapped = $seat');
@@ -79,7 +78,11 @@ abstract class _ReserveStore with Store {
       } else {
         _currentSeatsDay![seatIndexSelected].select();
       }
+      _seatIdSelected = id;
     } else if (status.isSelected) {
+      if (_seatIdSelected == id) {
+        _seatIdSelected = null;
+      }
       _currentSeatsDay![seatIndexSelected].unselect();
     }
     _state = ReserveStateChooseDateAndSeat(
