@@ -61,8 +61,9 @@ abstract class _ReserveStore with Store {
 
   @action
   void onSeatTap(int id) {
-    _seatIdSelected = _seatIndexFromId(id);
-    var seat = _currentSeatsDay![_seatIdSelected!];
+    _seatIdSelected = id;
+    int seatIndexSelected = _seatIndexFromId(id);
+    var seat = _currentSeatsDay![seatIndexSelected];
     print('seat tapped = $seat');
     SeatStatus status = seat.status;
     if (status.isUnavailable) {
@@ -74,12 +75,12 @@ abstract class _ReserveStore with Store {
       if (selectedSeat != null) {
         int selectedIndex = _seatIndexFromId(selectedSeat.id);
         _currentSeatsDay![selectedIndex].unselect();
-        _currentSeatsDay![_seatIdSelected!].select();
+        _currentSeatsDay![seatIndexSelected].select();
       } else {
-        _currentSeatsDay![_seatIdSelected!].select();
+        _currentSeatsDay![seatIndexSelected].select();
       }
     } else if (status.isSelected) {
-      _currentSeatsDay![_seatIdSelected!].unselect();
+      _currentSeatsDay![seatIndexSelected].unselect();
     }
     _state = ReserveStateChooseDateAndSeat(
       seats: _currentSeatsDay!,
@@ -90,10 +91,14 @@ abstract class _ReserveStore with Store {
   int _seatIndexFromId(int id) => _currentSeatsDay!.indexWhere((seat) => seat.id == id);
 
   @action
-  void chooseSeat() => _state = ReserveStateConfirmation(
+  void chooseSeat() {
+    if (_seatIdSelected != null) {
+      _state = ReserveStateConfirmation(
         date: DateFormat(Constants.DD_MM_YYYY).format(DateTime.now().add(Duration(days: _dayIndexSelected!))),
         seat: 'Cadeira $_seatIdSelected',
       );
+    }
+  }
 
   @action
   void confirm() => _state = ReserveStateSuccess();
