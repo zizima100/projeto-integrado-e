@@ -70,7 +70,6 @@ class ReservationProvider implements IReservationProvider {
     Response response = await _client.get(Uri.parse(
       Constants.API_URL + '/four-days-seats-data',
     ));
-    debugPrint('response => ${response.body}');
     return SeatsResponse.fromJson(response.body);
   }
 }

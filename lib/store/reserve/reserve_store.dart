@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show debugPrint;
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:thespot/data/model/seat.dart';
@@ -41,6 +42,7 @@ abstract class _ReserveStore with Store {
         dayIndex: _dayIndexSelected!,
       );
     } catch (e) {
+      debugPrint('error in reservation store start: $e');
       _state = ReserveStateFailure();
     }
   }

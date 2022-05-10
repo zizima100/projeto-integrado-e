@@ -26,14 +26,10 @@ class Seat {
 
   factory Seat.fromMap(Map<String, dynamic> map) {
     return Seat(
-      id: map['id']?.toInt() ?? 0,
-      status: SeatStatusParser.parse(map['status']),
+      id: map['id'] as int,
+      status: SeatStatusParser.parse(map['status'] as String),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Seat.fromJson(String source) => Seat.fromMap(json.decode(source));
 
   @override
   String toString() => 'Seat(id: $id, status: $status)';
@@ -51,7 +47,6 @@ extension SeatStatusParser on SeatStatus {
   bool get isUnavailable => index == SeatStatus.unavailable.index;
   bool get isSelected => index == SeatStatus.selected.index;
   static SeatStatus parse(String value) {
-    return SeatStatus.values
-        .firstWhere((SeatStatus element) => element.name == value);
+    return SeatStatus.values.firstWhere((SeatStatus element) => element.name.toUpperCase() == value.toUpperCase());
   }
 }
