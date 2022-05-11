@@ -99,6 +99,7 @@ abstract class _ReserveStore with Store {
       _state = ReserveStateConfirmation(
         date: DateFormat(Constants.DD_MM_YYYY).format(DateTime.now().add(Duration(days: _dayIndexSelected!))),
         seat: 'Cadeira $_seatIdSelected',
+        seats: _currentSeatsDay!,
       );
     }
   }

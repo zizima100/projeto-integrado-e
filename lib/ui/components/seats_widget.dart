@@ -1,44 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:thespot/data/model/seat.dart';
-import 'package:thespot/store/reserve/reserve_state.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
+import 'package:thespot/ui/colors.dart';
 import 'package:thespot/ui/text_style.dart';
 
-class InterativeSeatsWidget extends StatelessWidget {
-  const InterativeSeatsWidget({Key? key}) : super(key: key);
+class SeatsWidget extends StatelessWidget {
+  final bool interactive;
+  final List<Seat> seats;
 
-  @override
-  Widget build(BuildContext context) {
-    return Observer(
-      builder: (_) {
-        var reserveState = context.watch<ReserveStore>().state;
-        if (reserveState is ReserveStateChooseDateAndSeat) {
-          return _SeatsGridView(
-            seats: reserveState.seats,
-            onSeatTap: (int id) {
-              Provider.of<ReserveStore>(context, listen: false).onSeatTap(id);
-            },
-          );
-        }
-        return Container();
-      },
-    );
-  }
-}
-
-class ReadOnlySeatsWidget extends StatelessWidget {
-  final int selectedIndex;
-
-  const ReadOnlySeatsWidget({
+  const SeatsWidget({
     Key? key,
-    required this.selectedIndex,
+    required this.seats,
+    required this.interactive,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return _SeatsGridView(
+      seats: seats,
+      onSeatTap: interactive
+          ? (int id) {
+              Provider.of<ReserveStore>(
+                context,
+                listen: false,
+              ).onSeatTap(id);
+            }
+          : null,
+    );
   }
 }
 
@@ -63,17 +52,39 @@ class _SeatsGridView extends StatelessWidget {
               onSeatTap!(seat.id);
             }
           },
-          child: SeatWidget(
-            id: seat.id,
-            color: getColor(seat.status),
-          ),
+          child: _SeatWidget(style: _getStyle(seat)),
         );
       }).toList(),
     );
   }
 
+  _SeatStyle _getStyle(Seat seat) {
+    if (seat.status.isAvailable && onSeatTap != null) {
+      return _SeatStyle(
+        borderColor: TheSpotColors.blue,
+        color: Colors.transparent,
+        text: seat.id.toString(),
+        textColor: Colors.black,
+      );
+    } else if (seat.status.isSelected) {
+      return _SeatStyle(
+        borderColor: Colors.transparent,
+        color: TheSpotColors.blue,
+        text: seat.id.toString(),
+        textColor: Colors.white,
+      );
+    } else {
+      return _SeatStyle(
+        borderColor: Colors.transparent,
+        color: Colors.grey.shade300,
+        text: seat.id.toString(),
+        textColor: Colors.grey.shade500,
+      );
+    }
+  }
+
   Color getColor(SeatStatus status) {
-    if (status.isAvailable) {
+    if (status.isAvailable && onSeatTap != null) {
       return Colors.green;
     } else if (status.isSelected) {
       return Colors.blue;
@@ -83,25 +94,47 @@ class _SeatsGridView extends StatelessWidget {
   }
 }
 
-class SeatWidget extends StatelessWidget {
-  final int id;
+class _SeatStyle {
+  final Color borderColor;
   final Color color;
+  final String text;
+  final Color textColor;
 
-  const SeatWidget({
-    Key? key,
-    required this.id,
+  _SeatStyle({
+    required this.borderColor,
     required this.color,
+    required this.text,
+    required this.textColor,
+  });
+}
+
+class _SeatWidget extends StatelessWidget {
+  final _SeatStyle style;
+
+  const _SeatWidget({
+    Key? key,
+    required this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
-      color: color,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        border: Border.all(
+          color: style.borderColor,
+          width: 1.2,
+        ),
+        color: style.color,
+      ),
       child: Center(
         child: Text(
-          id.toString(),
-          style: TheSpotTextStyle.defaultStyle,
+          style.text,
+          style: TheSpotTextStyle.defaultStyle.copyWith(
+            color: style.textColor,
+            fontSize: 17,
+          ),
         ),
       ),
     );

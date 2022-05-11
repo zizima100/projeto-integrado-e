@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:thespot/data/model/seat.dart';
 import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/store/reserve/reserve_state.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
@@ -26,8 +27,16 @@ class ReserveScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             if (state is ReserveStateInitial) const _StartReservationWidget(),
-            if (state is ReserveStateChooseDateAndSeat) const _ChooseDateAndSeatWidget(),
-            if (state is ReserveStateConfirmation) _ConfirmReservationWidget(date: state.date, seat: state.seat),
+            if (state is ReserveStateChooseDateAndSeat)
+              _ChooseDateAndSeatWidget(
+                seats: state.seats,
+              ),
+            if (state is ReserveStateConfirmation)
+              _ConfirmReservationWidget(
+                date: state.date,
+                seat: state.seat,
+                seats: state.seats,
+              ),
             if (state is ReserveStateSuccess) const _SuccessReservationWidget(),
           ],
         );
@@ -61,22 +70,26 @@ class _StartReservationWidget extends StatelessWidget {
 }
 
 class _ChooseDateAndSeatWidget extends StatelessWidget {
-  const _ChooseDateAndSeatWidget({Key? key}) : super(key: key);
+  final List<Seat> seats;
+  const _ChooseDateAndSeatWidget({
+    Key? key,
+    required this.seats,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _ReservationBackButtonContainer(
       content: Column(
         children: [
-          SizedBox(height: context.layoutHeight(2)),
+          SizedBox(height: context.layoutHeight(3)),
           const Flexible(
             flex: 1,
             child: _ChooseDateWidget(),
           ),
           SizedBox(height: context.layoutHeight(1.5)),
-          const Flexible(
+          Flexible(
             flex: 5,
-            child: InterativeSeatsWidget(),
+            child: SeatsWidget(interactive: true, seats: seats),
           ),
         ],
       ),
@@ -126,8 +139,14 @@ class _ChooseDateWidget extends StatelessWidget {
 class _ConfirmReservationWidget extends StatelessWidget {
   final String date;
   final String seat;
+  final List<Seat> seats;
 
-  const _ConfirmReservationWidget({Key? key, required this.date, required this.seat}) : super(key: key);
+  const _ConfirmReservationWidget({
+    Key? key,
+    required this.date,
+    required this.seat,
+    required this.seats,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +155,16 @@ class _ConfirmReservationWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DateAndSitHighlighted(date: date, seat: seat),
+          SizedBox(height: context.layoutHeight(2.5)),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: DateAndSitHighlighted(date: date, seat: seat),
+          ),
+          SizedBox(height: context.layoutHeight(2)),
+          Flexible(
+            flex: 4,
+            child: SeatsWidget(interactive: false, seats: seats),
+          ),
         ],
       ),
       buttonStyle: _ButtonStyle(text: 'Confirmar Reserva', color: TheSpotColors.green),

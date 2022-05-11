@@ -14,6 +14,7 @@ class DateAndSitHighlighted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
           text: TextSpan(
@@ -27,6 +28,7 @@ class DateAndSitHighlighted extends StatelessWidget {
             style: TheSpotTextStyle.defaultStyle.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
+        const SizedBox(height: 5),
         RichText(
           text: TextSpan(
             text: '\u2022 Assento: ',
