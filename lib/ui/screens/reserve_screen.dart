@@ -7,6 +7,7 @@ import 'package:thespot/data/model/seat.dart';
 import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/store/reserve/reserve_state.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
+import 'package:thespot/store/reserve_or_query/reserve_or_query_store.dart';
 import 'package:thespot/ui/colors.dart';
 import 'package:thespot/ui/components/buttons.dart';
 import 'package:thespot/ui/components/seats_widget.dart';
@@ -22,6 +23,11 @@ class ReserveScreen extends StatelessWidget {
     return Observer(
       builder: (context) {
         var state = context.watch<ReserveStore>().state;
+        if (state is ReserveStateQuerySeat) {
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            Provider.of<ReserveOrQueryStore>(context, listen: false).seatReserved();
+          });
+        }
         debugPrint('ReserveScreen state => $state');
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -206,7 +212,9 @@ class _SuccessReservationWidget extends StatelessWidget {
           SvgPicture.asset('assets/email_sent.svg'),
         ],
       ),
-      onButtonTap: () {},
+      onButtonTap: () {
+        Provider.of<ReserveStore>(context, listen: false).querySeatReserved();
+      },
     );
   }
 }

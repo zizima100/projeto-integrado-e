@@ -6,8 +6,7 @@ import 'reserve_or_query_state.dart';
 
 part 'reserve_or_query_store.g.dart';
 
-class ReserveOrQueryStore extends _ReserveOrQueryStore
-    with _$ReserveOrQueryStore {
+class ReserveOrQueryStore extends _ReserveOrQueryStore with _$ReserveOrQueryStore {
   ReserveOrQueryStore({
     required IReservationRepository repository,
   }) {
@@ -44,5 +43,10 @@ abstract class _ReserveOrQueryStore with Store {
   @action
   void reserveCancelled() {
     _state = ReserveOrQueryReserving();
+  }
+
+  @action
+  void seatReserved() {
+    _state = ReserveOrQueryQuerying();
   }
 }

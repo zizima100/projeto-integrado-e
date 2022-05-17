@@ -29,3 +29,5 @@ class ReserveStateConfirmation implements ReserveState {
 class ReserveStateSuccess implements ReserveState {}
 
 class ReserveStateFailure implements ReserveState {}
+
+class ReserveStateQuerySeat implements ReserveState {}

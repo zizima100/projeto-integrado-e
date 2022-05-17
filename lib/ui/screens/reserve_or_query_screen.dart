@@ -17,7 +17,7 @@ class ReserveOrQueryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('ReserveOrQueryScreen build');
-    var reserveOrQueryStore = context.watch<ReserveOrQueryStore>();
+    var reserveOrQueryStore = context.read<ReserveOrQueryStore>();
     reserveOrQueryStore.reserveOrQuery();
     const double topBarLayoutRatio = 20;
 
@@ -48,9 +48,7 @@ class ReserveOrQueryScreen extends StatelessWidget {
                     decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
-                    child: reserveOrQueryState is ReserveOrQueryReserving
-                        ? const ReserveScreen()
-                        : const QueryScreen(),
+                    child: reserveOrQueryState is ReserveOrQueryReserving ? const ReserveScreen() : const QueryScreen(),
                   ),
                 ),
               ],

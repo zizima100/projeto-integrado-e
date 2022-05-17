@@ -131,6 +131,11 @@ abstract class _ReserveStore with Store {
   }
 
   @action
+  void querySeatReserved() {
+    _state = ReserveStateQuerySeat();
+  }
+
+  @action
   void backState() {
     if (_state is ReserveStateInitial) {
       return;
