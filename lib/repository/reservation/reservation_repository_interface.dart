@@ -6,4 +6,5 @@ abstract class IReservationRepository {
   Future<Reservation> getReservation();
   Future<bool> cancel(int id);
   Future<List<List<Seat>>> getSeatsInNext4Days();
+  Future<void> reserve(DateTime date, int seatId);
 }

@@ -105,7 +105,18 @@ abstract class _ReserveStore with Store {
   }
 
   @action
-  void confirm() => _state = ReserveStateSuccess();
+  Future<void> confirm() async {
+    try {
+      await _repository.reserve(
+        DateTime.now().add(Duration(days: _dayIndexSelected!)),
+        _seatIdSelected!,
+      );
+      _state = ReserveStateSuccess();
+    } on Exception catch (e) {
+      debugPrint('error in reservation confirmation: $e');
+      _state = ReserveStateFailure();
+    }
+  }
 
   @action
   void backState() {

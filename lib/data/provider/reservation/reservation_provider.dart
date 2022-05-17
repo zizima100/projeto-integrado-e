@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:thespot/data/model/auth_employee.dart';
 import 'package:thespot/data/model/has_reservation_response.dart';
+import 'package:thespot/data/model/reservation_request.dart';
 import 'package:thespot/data/model/reservation_response.dart';
 import 'package:thespot/data/model/seats_response.dart';
 import 'package:thespot/data/provider/constants.dart';
@@ -44,12 +45,6 @@ class ReservationProvider implements IReservationProvider {
   @override
   Future<bool> cancel(int id) async {
     debugPrint('cancelling $id');
-    Map<String, dynamic> body = {
-      ..._jsonHeader
-    };
-    body.addAll({
-      'reservationId': id,
-    });
 
     Response response = await _client.put(
       Uri.parse(Constants.API_URL + '/cancel-reservation'),
@@ -71,5 +66,17 @@ class ReservationProvider implements IReservationProvider {
       Constants.API_URL + '/four-days-seats-data',
     ));
     return SeatsResponse.fromJson(response.body);
+  }
+
+  @override
+  Future<void> reserve(ReservationRequest request) async {
+    debugPrint('reserve $request');
+
+    Response response = await _client.post(
+      Uri.parse(Constants.API_URL + '/new-reservation'),
+      body: request.toJson(),
+      headers: _jsonHeader,
+    );
+    debugPrint('reserve response => ${response.body}');
   }
 }
