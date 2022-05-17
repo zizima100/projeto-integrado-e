@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:thespot/data/model/seat.dart';
+import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/ui/colors.dart';
 import 'package:thespot/ui/text_style.dart';
 
 class SeatsWidget extends StatelessWidget {
   final bool interactive;
-  final List<Seat> seats;
+  final List<Seat>? seats;
+  final int? indexSelected;
 
   const SeatsWidget({
     Key? key,
-    required this.seats,
     required this.interactive,
+    this.seats,
+    this.indexSelected,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _SeatsGridView(
-      seats: seats,
+      seats: _seats,
       onSeatTap: interactive
           ? (int id) {
               Provider.of<ReserveStore>(
@@ -28,6 +31,24 @@ class SeatsWidget extends StatelessWidget {
             }
           : null,
     );
+  }
+
+  List<Seat> get _seats {
+    if (interactive) {
+      return seats!;
+    }
+    return List.generate(Constants.NUMBER_OF_SEATS, (index) {
+      if (index == indexSelected) {
+        return Seat(
+          id: Seat.idFromGridViewIndex(index),
+          status: SeatStatus.selected,
+        );
+      }
+      return Seat(
+        id: Seat.idFromGridViewIndex(index),
+        status: SeatStatus.unavailable,
+      );
+    });
   }
 }
 

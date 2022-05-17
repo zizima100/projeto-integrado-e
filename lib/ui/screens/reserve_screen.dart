@@ -35,7 +35,7 @@ class ReserveScreen extends StatelessWidget {
               _ConfirmReservationWidget(
                 date: state.date,
                 seat: state.seat,
-                seats: state.seats,
+                indexSelected: state.indexSelected,
               ),
             if (state is ReserveStateSuccess) const _SuccessReservationWidget(),
           ],
@@ -139,13 +139,13 @@ class _ChooseDateWidget extends StatelessWidget {
 class _ConfirmReservationWidget extends StatelessWidget {
   final String date;
   final String seat;
-  final List<Seat> seats;
+  final int indexSelected;
 
   const _ConfirmReservationWidget({
     Key? key,
     required this.date,
     required this.seat,
-    required this.seats,
+    required this.indexSelected,
   }) : super(key: key);
 
   @override
@@ -163,7 +163,10 @@ class _ConfirmReservationWidget extends StatelessWidget {
           SizedBox(height: context.layoutHeight(2)),
           Flexible(
             flex: 4,
-            child: SeatsWidget(interactive: false, seats: seats),
+            child: SeatsWidget(
+              interactive: false,
+              indexSelected: indexSelected,
+            ),
           ),
         ],
       ),

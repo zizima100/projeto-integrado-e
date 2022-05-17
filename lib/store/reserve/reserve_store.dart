@@ -20,8 +20,8 @@ class ReserveStore extends _ReserveStore with _$ReserveStore {
 abstract class _ReserveStore with Store {
   late IReservationRepository _repository;
   List<List<Seat>>? _allSeats;
+  final SeatIndexes _indexes = SeatIndexes(dayIndex: 0);
   List<Seat>? _currentSeatsDay;
-  int? _dayIndexSelected;
   int? _seatIdSelected;
 
   @observable
@@ -35,11 +35,10 @@ abstract class _ReserveStore with Store {
     try {
       _allSeats = await _repository.getSeatsInNext4Days();
       print('_allSeats => $_allSeats');
-      _dayIndexSelected = 0;
-      _currentSeatsDay = _allSeats![_dayIndexSelected!];
+      _currentSeatsDay = _allSeats![_indexes.dayIndex];
       _state = ReserveStateChooseDateAndSeat(
         seats: _currentSeatsDay!,
-        dayIndex: _dayIndexSelected!,
+        dayIndex: _indexes.dayIndex,
       );
     } catch (e) {
       debugPrint('error in reservation store start: $e');
@@ -51,8 +50,11 @@ abstract class _ReserveStore with Store {
   /// 0 is today, 1 tomorrow and so on.
   @action
   void onDayTap(int dayIndex) {
-    _dayIndexSelected = dayIndex;
+    _indexes.dayIndex = dayIndex;
+    _indexes.resetSeat();
+    _unselectAllSeats();
     _currentSeatsDay = _allSeats![dayIndex];
+
     _state = ReserveStateChooseDateAndSeat(
       seats: _currentSeatsDay!,
       dayIndex: dayIndex,
@@ -61,8 +63,8 @@ abstract class _ReserveStore with Store {
 
   @action
   void onSeatTap(int id) {
-    int seatIndexSelected = _seatIndexFromId(id);
-    var seat = _currentSeatsDay![seatIndexSelected];
+    _indexes.seatIndex = _seatIndexFromId(id);
+    var seat = _currentSeatsDay![_indexes.seatIndex!];
     print('seat tapped = $seat');
     SeatStatus status = seat.status;
     if (status.isUnavailable) {
@@ -74,32 +76,42 @@ abstract class _ReserveStore with Store {
       if (selectedSeat != null) {
         int selectedIndex = _seatIndexFromId(selectedSeat.id);
         _currentSeatsDay![selectedIndex].unselect();
-        _currentSeatsDay![seatIndexSelected].select();
+        _currentSeatsDay![_indexes.seatIndex!].select();
       } else {
-        _currentSeatsDay![seatIndexSelected].select();
+        _currentSeatsDay![_indexes.seatIndex!].select();
       }
       _seatIdSelected = id;
     } else if (status.isSelected) {
       if (_seatIdSelected == id) {
         _seatIdSelected = null;
       }
-      _currentSeatsDay![seatIndexSelected].unselect();
+      _currentSeatsDay![_indexes.seatIndex!].unselect();
     }
     _state = ReserveStateChooseDateAndSeat(
       seats: _currentSeatsDay!,
-      dayIndex: _dayIndexSelected!,
+      dayIndex: _indexes.dayIndex,
     );
   }
 
   int _seatIndexFromId(int id) => _currentSeatsDay!.indexWhere((seat) => seat.id == id);
 
+  void _unselectAllSeats() {
+    for (var seatsDay in _allSeats!) {
+      for (var seat in seatsDay) {
+        seat.unselect();
+      }
+    }
+  }
+
   @action
   void chooseSeat() {
     if (_seatIdSelected != null) {
       _state = ReserveStateConfirmation(
-        date: DateFormat(Constants.DD_MM_YYYY).format(DateTime.now().add(Duration(days: _dayIndexSelected!))),
+        date: DateFormat(Constants.DD_MM_YYYY).format(DateTime.now().add(
+          Duration(days: _indexes.dayIndex),
+        )),
         seat: 'Cadeira $_seatIdSelected',
-        seats: _currentSeatsDay!,
+        indexSelected: _indexes.seatIndex!,
       );
     }
   }
@@ -108,7 +120,7 @@ abstract class _ReserveStore with Store {
   Future<void> confirm() async {
     try {
       await _repository.reserve(
-        DateTime.now().add(Duration(days: _dayIndexSelected!)),
+        DateTime.now().add(Duration(days: _indexes.dayIndex)),
         _seatIdSelected!,
       );
       _state = ReserveStateSuccess();
@@ -127,7 +139,10 @@ abstract class _ReserveStore with Store {
       _state = ReserveStateInitial();
     }
     if (_state is ReserveStateConfirmation) {
-      _state = ReserveStateChooseDateAndSeat(seats: _currentSeatsDay!, dayIndex: _dayIndexSelected!);
+      _state = ReserveStateChooseDateAndSeat(
+        seats: _currentSeatsDay!,
+        dayIndex: _indexes.dayIndex,
+      );
     }
   }
 

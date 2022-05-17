@@ -17,9 +17,13 @@ class ReserveStateChooseDateAndSeat implements ReserveState {
 class ReserveStateConfirmation implements ReserveState {
   final String date;
   final String seat;
-  final List<Seat> seats;
+  final int indexSelected;
 
-  ReserveStateConfirmation({required this.date, required this.seat, required this.seats});
+  ReserveStateConfirmation({
+    required this.date,
+    required this.seat,
+    required this.indexSelected,
+  });
 }
 
 class ReserveStateSuccess implements ReserveState {}

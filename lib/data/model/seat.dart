@@ -31,6 +31,8 @@ class Seat {
     );
   }
 
+  static int idFromGridViewIndex(int index) => index + 1;
+
   @override
   String toString() => 'Seat(id: $id, status: $status)';
 }
@@ -49,4 +51,16 @@ extension SeatStatusParser on SeatStatus {
   static SeatStatus parse(String value) {
     return SeatStatus.values.firstWhere((SeatStatus element) => element.name.toUpperCase() == value.toUpperCase());
   }
+}
+
+class SeatIndexes {
+  int dayIndex;
+  int? seatIndex;
+
+  SeatIndexes({
+    required this.dayIndex,
+    this.seatIndex,
+  });
+
+  void resetSeat() => seatIndex = null;
 }
