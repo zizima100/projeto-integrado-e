@@ -48,7 +48,7 @@ class ReserveOrQueryScreen extends StatelessWidget {
                     decoration: const BoxDecoration(
                       color: Colors.white,
                     ),
-                    child: reserveOrQueryState is ReserveOrQueryReserving ? const ReserveScreen() : const QueryScreen(),
+                    child: _getScreenFromState(reserveOrQueryState),
                   ),
                 ),
               ],
@@ -62,5 +62,15 @@ class ReserveOrQueryScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Widget _getScreenFromState(ReserveOrQueryState state) {
+    if (state is ReserveOrQueryReserving) {
+      return const ReserveScreen();
+    }
+    if (state is ReserveOrQueryQuerying) {
+      return const QueryScreen();
+    }
+    return Container();
   }
 }

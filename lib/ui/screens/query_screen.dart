@@ -18,6 +18,7 @@ class QueryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('QueryScreen');
     var queryStore = context.watch<QueryStore>();
     queryStore.query();
 
@@ -54,8 +55,7 @@ class QueryScreen extends StatelessWidget {
           });
         } else if (state is QueryStateReservationCancelled) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
-            Provider.of<ReserveOrQueryStore>(context, listen: false)
-                .reserveCancelled();
+            Provider.of<ReserveOrQueryStore>(context, listen: false).reserveCancelled();
             Navigator.pop(context);
           });
         }
@@ -69,8 +69,7 @@ class _ReserveQuerySeat extends StatelessWidget {
   final String date;
   final String seat;
 
-  const _ReserveQuerySeat({Key? key, required this.date, required this.seat})
-      : super(key: key);
+  const _ReserveQuerySeat({Key? key, required this.date, required this.seat}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +84,7 @@ class _ReserveQuerySeat extends StatelessWidget {
                 style: TheSpotTextStyle.defaultStyle,
               )
             ],
-            style: TheSpotTextStyle.defaultStyle
-                .copyWith(fontWeight: FontWeight.bold),
+            style: TheSpotTextStyle.defaultStyle.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         SizedBox(
@@ -94,8 +92,7 @@ class _ReserveQuerySeat extends StatelessWidget {
         ),
         InfinityWidthButton(
           text: 'Visualizar Reserva',
-          onPressed: () => Provider.of<QueryStore>(context, listen: false)
-              .detailedReservation(),
+          onPressed: () => Provider.of<QueryStore>(context, listen: false).detailedReservation(),
         ),
         SizedBox(
           height: context.layoutHeight(2),
@@ -128,9 +125,7 @@ class _WhyItCantReserve extends StatelessWidget {
             text: ' uma ',
             style: _boldStyle,
           ),
-          const TextSpan(
-              text:
-                  'reserva ativa por vez. Se desejar realizar outra reserva, clique em'),
+          const TextSpan(text: 'reserva ativa por vez. Se desejar realizar outra reserva, clique em'),
           TextSpan(
             text: '“Visualizar Reserva”',
             style: _boldStyle,
@@ -186,8 +181,7 @@ class _ReserveDetailed extends StatelessWidget {
             ),
             DefaultSmallButton(
               onPressed: () {
-                Provider.of<QueryStore>(context, listen: false)
-                    .confirmCancellation();
+                Provider.of<QueryStore>(context, listen: false).confirmCancellation();
               },
               text: 'Cancelar Reserva',
               textColor: TheSpotColors.blue,
