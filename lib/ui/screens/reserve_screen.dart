@@ -26,6 +26,7 @@ class ReserveScreen extends StatelessWidget {
         if (state is ReserveStateQuerySeat) {
           WidgetsBinding.instance?.addPostFrameCallback((_) {
             Provider.of<ReserveOrQueryStore>(context, listen: false).seatReserved();
+            Provider.of<ReserveStore>(context, listen: false).resetState();
           });
         }
         debugPrint('ReserveScreen state => $state');
