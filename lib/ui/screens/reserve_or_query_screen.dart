@@ -19,7 +19,7 @@ class ReserveOrQueryScreen extends StatelessWidget {
     debugPrint('ReserveOrQueryScreen build');
     var reserveOrQueryStore = context.read<ReserveOrQueryStore>();
     reserveOrQueryStore.reserveOrQuery();
-    const double topBarLayoutRatio = 20;
+    const double topBarLayoutRatio = 16;
 
     return SafeArea(
       child: Observer(builder: (_) {

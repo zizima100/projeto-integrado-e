@@ -30,7 +30,7 @@ abstract class _QueryStore with Store {
     try {
       _state = QueryStateLoading();
       _reservation = await _repository.getReservation();
-      _state = QueryStateQueried(_reservation!);
+      _state = QueryStateQueried(_reservation!, _reservation!.idSeat - 1);
     } catch (e) {
       debugPrint('Error on _query: $e');
       _state = QueryStateFailure();
@@ -44,7 +44,7 @@ abstract class _QueryStore with Store {
 
   @action
   void backToInitial() {
-    _state = QueryStateQueried(_reservation!);
+    _state = QueryStateQueried(_reservation!, _reservation!.idSeat - 1);
   }
 
   @action

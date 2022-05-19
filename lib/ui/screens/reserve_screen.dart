@@ -93,7 +93,7 @@ class _ChooseDateAndSeatWidget extends StatelessWidget {
             flex: 1,
             child: _ChooseDateWidget(),
           ),
-          SizedBox(height: context.layoutHeight(1.5)),
+          SizedBox(height: context.layoutHeight(3)),
           Flexible(
             flex: 5,
             child: SeatsWidget(interactive: true, seats: seats),
@@ -159,7 +159,7 @@ class _ConfirmReservationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return _ReservationBackButtonContainer(
       content: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: context.layoutHeight(2.5)),
@@ -167,9 +167,9 @@ class _ConfirmReservationWidget extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20),
             child: DateAndSitHighlighted(date: date, seat: seat),
           ),
-          SizedBox(height: context.layoutHeight(2)),
-          Flexible(
-            flex: 4,
+          SizedBox(height: context.layoutHeight(4.2)),
+          SizedBox(
+            height: context.layoutHeight(42),
             child: SeatsWidget(
               interactive: false,
               indexSelected: indexSelected,

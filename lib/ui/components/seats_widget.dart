@@ -4,6 +4,7 @@ import 'package:thespot/data/model/seat.dart';
 import 'package:thespot/data/provider/constants.dart';
 import 'package:thespot/store/reserve/reserve_store.dart';
 import 'package:thespot/ui/colors.dart';
+import 'package:thespot/ui/extensions/ui_extensions.dart';
 import 'package:thespot/ui/text_style.dart';
 
 class SeatsWidget extends StatelessWidget {
@@ -64,19 +65,27 @@ class _SeatsGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 4,
-      children: seats.map((seat) {
-        return GestureDetector(
-          onTap: () {
-            if (onSeatTap != null) {
-              onSeatTap!(seat.id);
-            }
-          },
-          child: _SeatWidget(style: _getStyle(seat)),
-        );
-      }).toList(),
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return GridView.count(
+        // physics: const NeverScrollableScrollPhysics(),
+        childAspectRatio: 1.1,
+        crossAxisCount: 4,
+        mainAxisSpacing: constraints.maxWidth / 35,
+        crossAxisSpacing: constraints.maxWidth / 35,
+        children: seats.map((seat) {
+          return GestureDetector(
+            onTap: () {
+              if (onSeatTap != null) {
+                onSeatTap!(seat.id);
+              }
+            },
+            child: _SeatWidget(
+              style: _getStyle(seat),
+            ),
+          );
+        }).toList(),
+      );
+    });
   }
 
   _SeatStyle _getStyle(Seat seat) {
@@ -140,7 +149,6 @@ class _SeatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(5)),
         border: Border.all(

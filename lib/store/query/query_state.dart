@@ -9,8 +9,9 @@ class QueryStateFailure implements QueryState {}
 
 class QueryStateQueried implements QueryState {
   final Reservation _reservation;
+  final int seatIndex;
 
-  const QueryStateQueried(this._reservation);
+  const QueryStateQueried(this._reservation, this.seatIndex);
 
   String get seat => 'Cadeira ${_reservation.idSeat}';
   String get date => DateFormat('dd/MM/yyyy').format(_reservation.date);
