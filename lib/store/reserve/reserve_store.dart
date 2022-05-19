@@ -153,6 +153,15 @@ abstract class _ReserveStore with Store {
 
   @action
   void resetState() {
+    _setInitialStateValues();
+  }
+
+  @action
+  void _setInitialStateValues() {
     _state = ReserveStateInitial();
+    _indexes.dayIndex = 0;
+    _indexes.seatIndex = null;
+    _currentSeatsDay = null;
+    _seatIdSelected = null;
   }
 }
