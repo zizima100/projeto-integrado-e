@@ -33,6 +33,7 @@ abstract class _ReserveStore with Store {
   @action
   Future<void> start() async {
     try {
+      _state = ReserveStateChooseDateAndSeat.loading();
       _allSeats = await _repository.getSeatsInNext4Days();
       print('_allSeats => $_allSeats');
       _currentSeatsDay = _allSeats![_indexes.dayIndex];
@@ -98,14 +99,16 @@ abstract class _ReserveStore with Store {
   void _unselectAllSeats() {
     for (var seatsDay in _allSeats!) {
       for (var seat in seatsDay) {
-        seat.unselect();
+        if(seat.status.isSelected) {
+          seat.unselect();
+        }
       }
     }
   }
 
   @action
   void chooseSeat() {
-    if (_seatIdSelected != null) {
+    if (_seatIdSelected != null && _indexes.seatIndex != null) {
       _state = ReserveStateConfirmation(
         date: DateFormat(Constants.DD_MM_YYYY).format(DateTime.now().add(
           Duration(days: _indexes.dayIndex),
@@ -136,19 +139,22 @@ abstract class _ReserveStore with Store {
   }
 
   @action
-  void backState() {
-    if (_state is ReserveStateInitial) {
-      return;
+  bool backState() {
+    if (_state is ReserveStateInitial || state is ReserveStateSuccess) {
+      return true;
     }
     if (_state is ReserveStateChooseDateAndSeat) {
-      _state = ReserveStateInitial();
+      _setInitialStateValues();
+      return false;
     }
     if (_state is ReserveStateConfirmation) {
       _state = ReserveStateChooseDateAndSeat(
         seats: _currentSeatsDay!,
         dayIndex: _indexes.dayIndex,
       );
+      return false;
     }
+    return false;
   }
 
   @action
@@ -159,6 +165,7 @@ abstract class _ReserveStore with Store {
   @action
   void _setInitialStateValues() {
     _state = ReserveStateInitial();
+    _allSeats = null;
     _indexes.dayIndex = 0;
     _indexes.seatIndex = null;
     _currentSeatsDay = null;

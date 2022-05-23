@@ -67,7 +67,7 @@ class _SeatsGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return GridView.count(
-        // physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         childAspectRatio: 1.1,
         crossAxisCount: 4,
         mainAxisSpacing: constraints.maxWidth / 35,

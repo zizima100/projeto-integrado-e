@@ -141,7 +141,7 @@ class _WhyItCantReserve extends StatelessWidget {
           ),
           const TextSpan(
               text:
-                  'reserva ativa por vez. Se desejar realizar outra reserva, clique em'),
+                  'reserva ativa por vez. Se desejar realizar outra reserva, clique em '),
           TextSpan(
             text: '“Visualizar Reserva”',
             style: _boldStyle,

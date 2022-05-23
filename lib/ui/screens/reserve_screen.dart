@@ -30,22 +30,36 @@ class ReserveScreen extends StatelessWidget {
           });
         }
         debugPrint('ReserveScreen state => $state');
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (state is ReserveStateInitial) const _StartReservationWidget(),
-            if (state is ReserveStateChooseDateAndSeat)
-              _ChooseDateAndSeatWidget(
-                seats: state.seats,
+        return WillPopScope(
+          onWillPop: () async {
+            return Provider.of<ReserveStore>(context, listen: false).backState();
+          },
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  if (state is ReserveStateInitial) const _StartReservationWidget(),
+                  if (state is ReserveStateChooseDateAndSeat && !state.isLoading)
+                    _ChooseDateAndSeatWidget(
+                      seats: state.seats,
+                    ),
+                  if (state is ReserveStateConfirmation)
+                    _ConfirmReservationWidget(
+                      date: state.date,
+                      seat: state.seat,
+                      indexSelected: state.indexSelected,
+                    ),
+                  if (state is ReserveStateSuccess) const _SuccessReservationWidget(),
+                ],
               ),
-            if (state is ReserveStateConfirmation)
-              _ConfirmReservationWidget(
-                date: state.date,
-                seat: state.seat,
-                indexSelected: state.indexSelected,
-              ),
-            if (state is ReserveStateSuccess) const _SuccessReservationWidget(),
-          ],
+              if (state is ReserveStateChooseDateAndSeat && state.isLoading)
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: LinearProgressIndicator(),
+                )
+            ],
+          ),
         );
       },
     );
@@ -312,6 +326,7 @@ class _BackButtonText extends StatelessWidget {
     return Row(
       children: [
         Material(
+          color: Colors.transparent,
           child: SizedBox(
             height: context.layoutWidth(_iconSize),
             width: context.layoutWidth(_iconSize),
