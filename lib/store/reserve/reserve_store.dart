@@ -64,13 +64,13 @@ abstract class _ReserveStore with Store {
 
   @action
   void onSeatTap(int id) {
-    _indexes.seatIndex = _seatIndexFromId(id);
-    var seat = _currentSeatsDay![_indexes.seatIndex!];
-    print('seat tapped = $seat');
+    var seatIndex = _seatIndexFromId(id);
+    var seat = _currentSeatsDay![seatIndex];
     SeatStatus status = seat.status;
     if (status.isUnavailable) {
       return;
     }
+    _indexes.seatIndex = seatIndex;
 
     if (status.isAvailable) {
       Seat? selectedSeat = _currentSeatsDay!.firstWhereOrNull((seat) => seat.status.isSelected);
@@ -99,7 +99,7 @@ abstract class _ReserveStore with Store {
   void _unselectAllSeats() {
     for (var seatsDay in _allSeats!) {
       for (var seat in seatsDay) {
-        if(seat.status.isSelected) {
+        if (seat.status.isSelected) {
           seat.unselect();
         }
       }
