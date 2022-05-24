@@ -50,6 +50,7 @@ class ConfirmationScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       DefaultSmallButton(
+                        buttonColor: TheSpotColors.blue,
                         onPressed: () => onNoTap(),
                         text: 'Não',
                       ),
